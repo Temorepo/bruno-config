@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="allow_bold" mtime="1246733113" type="bool" value="true"/>
+	<entry name="font" mtime="1251848693" type="string">
+		<stringvalue>Monospace 8</stringvalue>
+	</entry>
+	<entry name="cursor_shape" mtime="1246732768" type="string">
+		<stringvalue>block</stringvalue>
+	</entry>
+	<entry name="silent_bell" mtime="1246732711" type="bool" value="false"/>
+	<entry name="use_theme_colors" mtime="1251848693" type="bool" value="false"/>
+	<entry name="palette" mtime="1251848693" type="string">
+		<stringvalue>#000000000000:#CDCD00000000:#0000CDCD0000:#CDCDCDCD0000:#00000000CDCD:#CDCD0000CDCD:#0000CDCDCDCD:#FAFAEBEBD7D7:#404040404040:#FFFF00000000:#0000FFFF0000:#FFFFFFFF0000:#00000000FFFF:#FFFF0000FFFF:#0000FFFFFFFF:#FFFFFFFFFFFF</stringvalue>
+	</entry>
+	<entry name="scrollback_lines" mtime="1246732514" type="int" value="512"/>
+	<entry name="scrollbar_position" mtime="1251848693" type="string">
+		<stringvalue>hidden</stringvalue>
+	</entry>
+	<entry name="background_type" mtime="1246732498" type="string">
+		<stringvalue>solid</stringvalue>
+	</entry>
+	<entry name="use_system_font" mtime="1246733096" type="bool" value="true"/>
+	<entry name="default_show_menubar" mtime="1251848693" type="bool" value="false"/>
+	<entry name="visible_name" mtime="1251848693" type="string">
+		<stringvalue>Default</stringvalue>
+	</entry>
+	<entry name="word_chars" mtime="1251848693" type="string">
+		<stringvalue>-A-Za-z0-9,./?%&amp;#:_=+@~</stringvalue>
+	</entry>
+	<entry name="alternate_screen_scroll" mtime="1251848693" type="bool" value="true"/>
+	<entry name="background_color" mtime="1251848693" type="string">
+		<stringvalue>#000000000000</stringvalue>
+	</entry>
+	<entry name="foreground_color" mtime="1251848693" type="string">
+		<stringvalue>#FFFFFFFFFFFF</stringvalue>
+	</entry>
+</gconf>
