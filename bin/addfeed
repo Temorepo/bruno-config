@@ -1,0 +1,4 @@
+#!/bin/sh
+# For adding a feed to Thunderbird from Firefox
+
+echo $1 | sed -e s!feed://!feed://http://! | xargs /home/bruno/thunderbird/thunderbird -mail

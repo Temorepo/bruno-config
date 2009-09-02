@@ -1,0 +1,16 @@
+#!/bin/sh
+
+file=/tmp/screenshot.png
+import -window $1 $file
+
+md5=`md5sum -b $file | cut -d ' ' -f 1`
+remote="aduros.emufarmers.com/dump/$md5.png"
+
+scp -B $file "aduros@aduros.emufarmers.com:$remote"
+rm -f $file
+
+thumbnail=/tmp/thumbnail.bmp
+convert $file $thumbnail
+notify-send "Upload complete" "Screenshot at http://$remote" -i $thumbnail
+
+echo -n "http://$remote" | xsel -i
