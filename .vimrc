@@ -47,7 +47,7 @@ au BufNewFile,BufRead *.mtt setf xhtml
 
 " actionscript language
 let tlist_actionscript_settings = 'actionscript;c:class;t:constant;f:method;p:property;v:member'
-"let Tlist_Auto_Open = 1
+let Tlist_Auto_Open = 1
 let Tlist_Exit_OnlyWindow = 1
 
 " commentify a block, highlight a block and then press ",/"
