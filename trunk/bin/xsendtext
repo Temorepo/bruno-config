@@ -1,0 +1,37 @@
+#!/usr/bin/ruby
+#
+# Generates X events from STDIN using xsendkey.
+#
+
+names = {
+	" " => "space",
+	"\n" => "Return",
+	";" => "semicolon",
+	":" => "Shift+semicolon",
+	"." => "period",
+	">" => "Shift+period",
+	"?" => "Shift+slash",
+	"," => "comma",
+	"<" => "Shift+comma",
+	"'" => "quotedbl",
+	"\"" => "Shift+quotedbl",
+	"-" => "minus",
+	"=" => "equals",
+	"+" => "Shift+equals",
+	"(" => "Shift+9",
+	"&" => "Shift+7",
+	")" => "Shift+0",
+}
+
+STDIN.each_byte do |b|
+
+	c = b.chr
+
+	if b.between? 65, 90
+		c = "Shift+" + c
+	elsif names.has_key? c
+		c = names[c]
+	end
+
+	`xsendkey #{c}`
+end
