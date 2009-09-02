@@ -8,6 +8,8 @@ noremap N 10k
 
 noremap <C-o> O
 noremap O :tabopen 
+map <C-O> :winopen 
+map <C-d> :tabdetach
 
 noremap . gT
 noremap p gt
@@ -18,4 +20,20 @@ noremap P :tabmove! +1<Enter>
 noremap l n
 noremap L N
 
-au LocationChange .* js modes.passAllKeys = /www.whirled.com\/#/.test(buffer.URL)
+autocmd LocationChange .* js modes.passAllKeys = /www.whirled.com\/#/.test(buffer.URL)
+autocmd DownloadPost .* !notify-send "Download complete" "<file>"
+
+set editor="gnome-terminal -e vim"
+set hls
+
+" Show the feed button
+javascript <<EOF
+(function(){
+    var feedPanel = document.createElement("statusbarpanel");
+    feedPanel.setAttribute("id", "feed-panel-clone");
+    feedPanel.appendChild(document.getElementById("feed-button"));
+    feedPanel.firstChild.setAttribute("style", "padding: 0; max-height: 16px;");
+    document.getElementById("status-bar")
+            .insertBefore(feedPanel, document.getElementById("security-button"));
+})();
+EOF
