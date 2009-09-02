@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<gconf>
+	<entry name="layouts" mtime="1246733915" type="list" ltype="string">
+		<li type="string">
+			<stringvalue>us	dvorak</stringvalue>
+		</li>
+		<li type="string">
+			<stringvalue>us</stringvalue>
+		</li>
+	</entry>
+	<entry name="options" mtime="1246734596" type="list" ltype="string">
+		<li type="string">
+			<stringvalue>caps	caps:escape</stringvalue>
+		</li>
+		<li type="string">
+			<stringvalue>grp	grp:sclk_toggle</stringvalue>
+		</li>
+		<li type="string">
+			<stringvalue>altwin	altwin:meta_alt</stringvalue>
+		</li>
+	</entry>
+</gconf>
