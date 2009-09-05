@@ -6,3 +6,12 @@
 --regex-actionscript=/^[ \t]*[(private|public|protected) ( \t)(static)]+const[ \t]+([A-Za-z0-9_]+)[ \t]*/\1/t,constant, constants/
 --regex-actionscript=/^[ \t]*public[ \t]+class[ \t]+([A-Za-z0-9_]+)[ \t]*/\1/c,class, classes/
 --regex-actionscript=/^[ \t]*public[ \t]+interface[ \t]+([A-Za-z0-9_]+)[ \t]*/\1/i,interface, interfaces/
+
+--langdef=haxe
+--langmap=haxe:.hx
+--regex-haxe=/^[ \t]*[(private|public|static|override|inline|dynamic)( \t)]*function[ \t]+([A-Za-z0-9_]+)[ \t]*\(([^\{]*)/\1/f,functions/
+--regex-haxe=/^[ \t]*([private|public|static|protected|inline][ \t]?)+var[ \t]+([A-Za-z0-9_]+)/\2/v,variables/ 
+--regex-haxe=/^[ \t]*class[ \t]([A-Za-z0-9]+)[ \t]*[^\{]*/\1/c,classes/
+--regex-haxe=/^[ \t]*interface[ \t]([A-Za-z0-9]+)[ \t]*[^\{]*/\1/i,interfaces/
+--regex-haxe=/^[ \t]*enum[ \t]([A-Za-z0-9]+)[ \t]*[^\{]*/\1/e,enums/
+--regex-haxe=/^[ \t]*typedef[ \t]([A-Za-z0-9]+)[ \t]*=[ \t]*[^\{]*/\1/e,enums/
