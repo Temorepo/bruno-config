@@ -1,5 +1,7 @@
+filetype plugin on
+
 source ~/.vim/dvorak.vim
-source ~/.vim/ant.vim
+"source ~/.vim/ant.vim
 
 " Options and parameters
 
@@ -27,10 +29,8 @@ set sidescrolloff=2
 map T 10j
 map N 10k
 
-"map <CR> :wa<CR>:mak<CR>
-
-"map - :cnext<CR>
-"map _ :cprevious<CR>
+map - :cnext<CR>
+map _ :cprevious<CR>
 
 set sw=4
 set expandtab
@@ -55,9 +55,12 @@ let Tlist_Exit_OnlyWindow = 1
 map ,/ :s/^/\/\//<CR>
 map ,, :s/^\/\///<CR>
 
+command -nargs=* Make make <args> | cwindow 3
+map <CR> :wa<CR>:make<CR>
+
 " Handy
-noremap - ^
-noremap _ $
+"noremap - ^
+"noremap _ $
 
 " Eclim
 "map <silent> <buffer> ji :JavaImport<cr>
