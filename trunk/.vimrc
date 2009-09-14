@@ -61,6 +61,9 @@ map <CR> :wa<CR>:make<CR>
 " Handy
 "noremap - ^
 "noremap _ $
+noremap H <C-t>
+noremap S :tag!<CR>
+command EditConfig sp ~/.vimrc
 
 " Eclim
 "map <silent> <buffer> ji :JavaImport<cr>
@@ -70,3 +73,5 @@ map <CR> :wa<CR>:make<CR>
 "let st = g:snip_start_tag
 "let et = g:snip_end_tag
 "let cd = g:snip_elem_delim
+let g:SuperTabDefaultCompletionType = 'context'
+let g:globalHaxeLibs = ['templo']

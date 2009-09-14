@@ -39,7 +39,7 @@ syn keyword haxeExternal	import extern package
 syn keyword haxeConditional	if else switch
 syn keyword haxeRepeat		while for do in
 syn keyword haxeBoolean		true false
-syn keyword haxeConstant	null
+syn keyword haxeConstant	null here
 syn keyword haxeTypedef		this super
 syn keyword haxeOperator	new cast 
 syn keyword haxeType		Void Bool Int Float Dynamic
@@ -57,7 +57,7 @@ syn match   haxeClassDecl       "^class\>"
 syn match   haxeClassDecl       "[^.]\s*\<class\>"ms=s+1
 syn keyword haxeBranch		break continue nextgroup=haxeUserLabelRef skipwhite
 syn match   haxeUserLabelRef    "\k\+" contained
-syn keyword haxeScopeDecl       static public protected private abstract override 
+syn keyword haxeScopeDecl       static public protected private abstract override inline const
 
 " haxe.lang.*
 syn match haxeLangClass "\<System\>"
