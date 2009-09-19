@@ -26,6 +26,8 @@ autocmd DownloadPost .* !notify-send "Download complete" "<file>"
 set editor="gnome-terminal -e vim"
 set hls
 
+set! browser.tabs.autoHide=true
+
 " Show the feed button
 javascript <<EOF
 (function(){
