@@ -8,7 +8,7 @@ noremap N 10k
 
 noremap <C-o> O
 noremap O :tabopen 
-map <C-O> :winopen 
+map <C-S-o> :winopen 
 map <C-d> :tabdetach
 
 noremap . gT
@@ -20,7 +20,10 @@ noremap P :tabmove! +1<Enter>
 noremap l n
 noremap L N
 
-autocmd LocationChange .* js modes.passAllKeys = /www.whirled.com\/#/.test(buffer.URL)
+noremap ] :twitter 
+noremap } :share 
+
+"autocmd LocationChange .* js modes.passAllKeys = /www.whirled.com\/#/.test(buffer.URL)
 autocmd DownloadPost .* !notify-send "Download complete" "<file>"
 
 set editor="gnome-terminal -e vim"
@@ -37,5 +40,16 @@ javascript <<EOF
     feedPanel.firstChild.setAttribute("style", "padding: 0; max-height: 16px;");
     document.getElementById("status-bar")
             .insertBefore(feedPanel, document.getElementById("security-button"));
+
+    liberator.modules.commands.addUserCommand(['share'], 'Share current URL to Twitter', function (args) {
+        var cmd = ":twitter ";
+        if (args.length > 0) {
+            var message = args.join(" ");
+            cmd += message + ("!?:.,".indexOf(message[message.length-1]) == -1 ? ": " : " ");
+        }
+        cmd += liberator.modules.buffer.title + " at " + liberator.modules.buffer.URL;
+        liberator.execute(cmd);
+    });
+
 })();
 EOF

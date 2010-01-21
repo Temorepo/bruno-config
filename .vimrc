@@ -1,4 +1,4 @@
-filetype plugin on
+"filetype plugin on
 
 source ~/.vim/dvorak.vim
 "source ~/.vim/ant.vim
@@ -73,5 +73,6 @@ command EditConfig sp ~/.vimrc
 "let st = g:snip_start_tag
 "let et = g:snip_end_tag
 "let cd = g:snip_elem_delim
-let g:SuperTabDefaultCompletionType = 'context'
-let g:globalHaxeLibs = ['templo']
+"let g:SuperTabDefaultCompletionType = 'context'
+let g:haxe_build_hxml="build.hxml"
+"let g:globalHaxeLibs = ['templo', 'hxJSON']

@@ -44,7 +44,7 @@ syn keyword haxeTypedef		this super
 syn keyword haxeOperator	new cast 
 syn keyword haxeType		Void Bool Int Float Dynamic
 syn keyword haxeStatement	return
-syn keyword haxeStorageClass    function var final typedef enum
+syn keyword haxeStorageClass    function var final typedef enum callback
 " syn keyword haxeStatic		
 syn keyword haxeExceptions      throw try catch finally untyped
 syn keyword haxeAssert		assert
