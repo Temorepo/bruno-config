@@ -42,13 +42,9 @@ javascript <<EOF
             .insertBefore(feedPanel, document.getElementById("security-button"));
 
     liberator.modules.commands.addUserCommand(['share'], 'Share current URL to Twitter', function (args) {
-        var cmd = ":twitter ";
-        if (args.length > 0) {
-            var message = args.join(" ");
-            cmd += message + ("!?:.,".indexOf(message[message.length-1]) == -1 ? ": " : " ");
-        }
-        cmd += liberator.modules.buffer.title + " at " + liberator.modules.buffer.URL;
-        liberator.execute(cmd);
+        var description = (args.length > 0) ? args.join(" ") : "\""+ liberator.modules.buffer.title + "\"";
+        var url = util.httpGet("http://tinyurl.com/api-create.php?url=" + liberator.modules.buffer.URL).responseText;
+        liberator.execute(":twitter " + description + " " + url);
     });
 
 })();
