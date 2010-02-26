@@ -1,0 +1,7 @@
+map n k
+map t j
+map l n
+
+noremap l n
+
+set editor="urxvt -e vim"
