@@ -12,7 +12,7 @@ import DBus
 import DBus.Connection
 import DBus.Message
 import Control.Monad
-import Control.Exception
+import Control.OldException
 
 -- This retry is really awkward, but sometimes DBus won't let us get our
 -- name unless we retry a couple times.
