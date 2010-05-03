@@ -4,4 +4,4 @@ map l n
 
 noremap l n
 
-set editor="urxvt -e vim"
+set editor="gnome-terminal -e vim"
