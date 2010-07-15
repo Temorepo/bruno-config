@@ -30,6 +30,7 @@ set editor="gnome-terminal -e vim"
 set hls
 
 set! browser.tabs.autoHide=true
+set titlestring="Firefox"
 
 " Show the feed button
 javascript <<EOF
@@ -41,10 +42,14 @@ javascript <<EOF
     document.getElementById("status-bar")
             .insertBefore(feedPanel, document.getElementById("security-button"));
 
-    liberator.modules.commands.addUserCommand(['share'], 'Share current URL to Twitter', function (args) {
+    liberator.modules.commands.addUserCommand(["share"], 'Share current URL to Twitter', function (args) {
         var description = (args.length > 0) ? args.join(" ") : "\""+ liberator.modules.buffer.title + "\"";
         var url = util.httpGet("http://tinyurl.com/api-create.php?url=" + liberator.modules.buffer.URL).responseText;
         liberator.execute(":twitter " + description + " " + url);
+    });
+
+    liberator.modules.commands.addUserCommand(["chrome"], "Open current URL in Chrome", function (args) {
+        liberator.execute("!google-chrome '" + liberator.modules.buffer.URL + "' &", null, true);
     });
 
 })();
