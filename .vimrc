@@ -39,6 +39,7 @@ set background=dark
 colorscheme peachpuff
 set incsearch
 set hls
+set autowrite
 
 au BufNewFile,BufRead *.as setf actionscript
 au BufNewFile,BufRead *.fx setf javafx
@@ -61,8 +62,8 @@ map <CR> :wa<CR>:make<CR>
 " Handy
 "noremap - ^
 "noremap _ $
-noremap H <C-t>
-noremap S :tag!<CR>
+noremap H <C-O>
+noremap S <C-I>
 command EditConfig sp ~/.vimrc
 
 " Eclim
@@ -76,3 +77,14 @@ command EditConfig sp ~/.vimrc
 "let g:SuperTabDefaultCompletionType = 'context'
 let g:haxe_build_hxml="build.hxml"
 "let g:globalHaxeLibs = ['templo', 'hxJSON']
+
+highlight AutoSearch cterm=underline
+autocmd CursorMoved * silent! exe printf('match AutoSearch /\<%s\>/', expand('<cword>'))
+
+" Auto importer
+function! Import(idx)
+    let g:importIdx=a:idx
+    pyfile ~/.vim/import.py
+endfunction
+command! -nargs=* Import call Import(<q-args>)
+nmap ;i :pyfile ~/.vim/import.py<CR>
