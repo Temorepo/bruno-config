@@ -31,6 +31,8 @@ set hls
 
 set! browser.tabs.autoHide=true
 set titlestring="Firefox"
+set hintchars="aoeuidhtns"
+set guioptions="rb"
 
 " Show the feed button
 javascript <<EOF

@@ -6,6 +6,7 @@ import qualified Data.Map as M
 
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.SetWMName
 import XMonad.Actions.CycleWS
 
 import DBus
@@ -50,7 +51,8 @@ main = withConnection Session $ \ dbus -> do
                  , ppHidden   = wrap " " " "
                  , ppUrgent   = pangoColor "red"
                  , ppLayout   = pangoColor "#999999"
-                 }
+                 },
+        startupHook = setWMName "LG3D" -- Makes Java GUIs work
     } `additionalKeysP` (
     [ ("M-d", kill)
     , ("M-t", windows W.focusDown)
