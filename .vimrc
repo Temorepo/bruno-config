@@ -1,3 +1,5 @@
+" Not sure why this was commented out
+" Might be required for NERD commenter
 "filetype plugin on
 
 source ~/.vim/dvorak.vim
@@ -53,8 +55,11 @@ let Tlist_Auto_Open = 0
 let Tlist_Exit_OnlyWindow = 1
 
 " commentify a block, highlight a block and then press ",/"
-map ,/ :s/^/\/\//<CR>
-map ,, :s/^\/\///<CR>
+"map ,/ :s/^/\/\//<CR>
+"map ,, :s/^\/\///<CR>
+" Use NERD commenter instead
+map ,/ ,cl
+map ,? ,cu
 
 command -nargs=* Make make <args> | cwindow 3
 map <CR> :wa<CR>:make<CR>
