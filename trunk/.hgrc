@@ -1,0 +1,29 @@
+[ui]
+username = Bruno Garcia <bruno@threerings.net>
+editor = /usr/share/doc/mercurial-common/examples/hgeditor
+
+[extensions]
+extdiff =
+fetch =
+color =
+hgk = /usr/lib/pymodules/python2.6/hgext/hgk.py
+schemes =
+pager =
+bookmarks =
+
+[bookmarks]
+track.current = True
+
+[extdiff]
+cmd.vdi = vimdiff
+
+[schemes]
+ooo = ssh://src.earth.threerings.net/
+
+[pager]
+attend = annotate, cat, diff, export, glog, log, qdiff
+pager = less -R
+
+#[tasks]
+#auto.track.new = True
+#auto.stash = True

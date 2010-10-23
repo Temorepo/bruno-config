@@ -1,6 +1,6 @@
 " Not sure why this was commented out
 " Might be required for NERD commenter
-"filetype plugin on
+filetype plugin on
 
 source ~/.vim/dvorak.vim
 "source ~/.vim/ant.vim
