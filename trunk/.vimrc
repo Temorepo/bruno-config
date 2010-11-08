@@ -6,6 +6,7 @@ source ~/.vim/dvorak.vim
 "source ~/.vim/ant.vim
 
 " Options and parameters
+let mapleader=","
 
 set backspace=2
 set mouse=a
@@ -15,6 +16,8 @@ set smartcase
 
 set backup
 set backupdir=/tmp
+
+set gdefault
 
 syntax on
 
@@ -48,6 +51,8 @@ au BufNewFile,BufRead *.fx setf javafx
 au BufNewFile,BufRead *.hx setf haxe
 au BufNewFile,BufRead *.mtt setf xhtml
 
+au FileType ant,xml,html set sw=2
+
 " actionscript language
 let tlist_actionscript_settings = 'actionscript;c:class;t:constant;f:method;p:property;v:member'
 let tlist_haxe_settings='haxe;f:functions;v:variables;c:classes;i:interfaces;e:enums;t:typedefs'
@@ -62,7 +67,7 @@ map ,/ ,cl
 map ,? ,cu
 
 command -nargs=* Make make <args> | cwindow 3
-map <CR> :wa<CR>:make<CR>
+"map <CR> :wa<CR>:make<CR>
 
 " Handy
 "noremap - ^
@@ -93,3 +98,8 @@ function! Import(idx)
 endfunction
 command! -nargs=* Import call Import(<q-args>)
 nmap ;i :pyfile ~/.vim/import.py<CR>
+
+command -nargs=1 -complete=tag Coreen !xdg-open http://localhost:8080/coreen/\#LIBRARY~search~<args>
+nmap <leader>c :Coreen <cword><CR>
+
+nmap <leader>r :%s/\<<c-r>=expand("<cword>")<cr>\>/
