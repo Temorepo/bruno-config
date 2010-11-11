@@ -10,6 +10,7 @@ hgk = /usr/lib/pymodules/python2.6/hgext/hgk.py
 schemes =
 pager =
 bookmarks =
+rebase =
 
 [bookmarks]
 track.current = True
