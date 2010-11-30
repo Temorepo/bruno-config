@@ -14,8 +14,8 @@ map <C-d> :tabdetach
 noremap . gT
 noremap p gt
 
-noremap > :tabmove! -1<Enter>
-noremap P :tabmove! +1<Enter>
+noremap > :tabmove! -1<CR>
+noremap P :tabmove! +1<CR>
 
 noremap l n
 noremap L N
@@ -32,7 +32,7 @@ set hls
 "set! browser.tabs.autoHide=true
 set titlestring="Firefox"
 "set hintchars="aoeuidhtns"
-set guioptions="rb"
+"set guioptions="rb"
 
 " Show the feed button
 javascript <<EOF
