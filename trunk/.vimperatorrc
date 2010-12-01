@@ -45,6 +45,9 @@ javascript <<EOF
 //    document.getElementById("status-bar")
 //            .insertBefore(feedPanel, document.getElementById("security-button"));
 
+    // Keep the status bar the same height even if large icons have been added to it
+    document.getElementById("addon-bar").style.maxHeight = "16px";
+
     liberator.modules.commands.addUserCommand(["share"], 'Share current URL to Twitter', function (args) {
         var description = (args.length > 0) ? args.join(" ") : "\""+ liberator.modules.buffer.title + "\"";
         var url = util.httpGet("http://tinyurl.com/api-create.php?url=" + liberator.modules.buffer.URL).responseText;
