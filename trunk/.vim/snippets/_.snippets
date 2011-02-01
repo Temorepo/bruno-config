@@ -11,3 +11,25 @@ snippet /*
 	/**
 	 * ${1}
 	 */
+
+snippet enum
+	public final class ${1:} extends Enum
+	{
+	    finishedEnumerating($1);
+
+	    public static function values () :Array
+	    {
+	        return Enum.values($1);
+	    }
+
+	    public static function valueOf (name :String) :$1
+	    {
+	        return Enum.valueOf($1, name) as $1;
+	    }
+
+	    /** @private */
+	    public function $1 (name :String)
+	    {
+	        super(name);
+	    }
+	}

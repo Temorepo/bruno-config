@@ -2,6 +2,9 @@
 username = Bruno Garcia <bruno@threerings.net>
 editor = /usr/share/doc/mercurial-common/examples/hgeditor
 
+#[diff]
+#git = 1
+
 [extensions]
 extdiff =
 fetch =
@@ -11,6 +14,7 @@ schemes =
 pager =
 bookmarks =
 rebase =
+hgattic = /export/hgattic/attic.py
 
 [bookmarks]
 track.current = True

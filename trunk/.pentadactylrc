@@ -27,14 +27,17 @@ noremap L N
 "autocmd DownloadPost .* !notify-send "Download complete" "<file>"
 
 set editor="gnome-terminal -x vim -f"
-set hls
+"set hls
+
+set defsearch="ddg"
 
 "set! browser.tabs.autoHide=true
 set titlestring="Firefox"
 "set hintchars="aoeuidhtns"
 "set guioptions="rb"
 
-" Show the feed button
+noremap e :emenu View.Tab Groups<CR>
+
 javascript <<EOF
 (function(){
     // Broken in FF4, no status bar
@@ -50,6 +53,9 @@ javascript <<EOF
 //        var url = util.httpGet("http://tinyurl.com/api-create.php?url=" + dactyl.modules.buffer.URL).responseText;
 //        dactyl.execute(":twitter " + description + " " + url);
 //    });
+
+    // Keep the status bar the same height even if large icons have been added to it
+    //document.getElementById("addon-bar").style.maxHeight = "16px";
 
     dactyl.modules.commands.addUserCommand(["chrome"], "Open current URL in Chrome", function (args) {
         dactyl.execute("!google-chrome '" + dactyl.modules.buffer.URL + "' &", null, true);
