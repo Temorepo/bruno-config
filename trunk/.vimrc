@@ -103,3 +103,17 @@ command -nargs=1 -complete=tag Coreen !xdg-open http://localhost:8080/coreen/\#L
 nmap <leader>c :Coreen <cword><CR>
 
 nmap <leader>r :%s/\<<c-r>=expand("<cword>")<cr>\>/
+
+autocmd BufNewFile *.as call TemplateAS3()
+function! TemplateAS3()
+    let path = expand("%:p")
+
+    let package = substitute(path, "^.*\/as\/", "", "")
+    let package = substitute(package, "\/[^\/]*$", "", "")
+    let package = substitute(package, "\/", ".", "g")
+    let result = append(0, [ "package " . package . " {", ])
+
+    let classname = substitute(path, "^.*\/", "", "")
+    let classname = substitute(classname, "\\..*", "", "")
+    let result = append(line("$"), [ "class " . classname, "{", "}", "}" ])
+endfunction
