@@ -111,9 +111,23 @@ function! TemplateAS3()
     let package = substitute(path, "^.*\/as\/", "", "")
     let package = substitute(package, "\/[^\/]*$", "", "")
     let package = substitute(package, "\/", ".", "g")
-    let result = append(0, [ "package " . package . " {", ])
+    let result = append(0, "package " . package . " {")
 
     let classname = substitute(path, "^.*\/", "", "")
     let classname = substitute(classname, "\\..*", "", "")
-    let result = append(line("$"), [ "class " . classname, "{", "}", "}" ])
+    let result = append(line("$"), [ "public class " . classname, "{", "}", "}" ])
+endfunction
+
+autocmd BufNewFile *.java call TemplateJava()
+function! TemplateJava()
+    let path = expand("%:p")
+
+    let package = substitute(path, "^.*\/java\/", "", "")
+    let package = substitute(package, "\/[^\/]*$", "", "")
+    let package = substitute(package, "\/", ".", "g")
+    let result = append(0, "package " . package . ";")
+
+    let classname = substitute(path, "^.*\/", "", "")
+    let classname = substitute(classname, "\\..*", "", "")
+    let result = append(line("$"), [ "public class " . classname, "{", "}" ])
 endfunction
