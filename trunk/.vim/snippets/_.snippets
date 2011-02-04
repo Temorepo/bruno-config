@@ -33,3 +33,18 @@ snippet enum
 	        super(name);
 	    }
 	}
+
+snippet event
+	public class ${1:} extends Event
+	{
+	    public function $1 (type :String,
+	        bubbles :Boolean = false, cancelable :Boolean = false)
+	    {
+	        super(type, bubbles, cancelable);
+	    }
+
+	    override public function clone () :Event
+	    {
+	        return new $1(type, bubbles, cancelable);
+	    }
+	}
