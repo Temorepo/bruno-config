@@ -1,3 +1,5 @@
+set nocompatible
+
 " Not sure why this was commented out
 " Might be required for NERD commenter
 filetype plugin on
@@ -37,15 +39,34 @@ map N 10k
 map - :cnext<CR>
 map _ :cprevious<CR>
 
-set sw=4
+set shiftwidth=4
+set softtabstop=4
+"set tabstop=4
 set expandtab
+
 syntax on
 set background=dark
-colorscheme peachpuff
 set incsearch
 set hls
 set autowrite
 
+" GUI options
+set guioptions-=r " Scrollbars
+set guioptions-=R
+set guioptions-=l
+set guioptions-=L
+set guioptions-=t
+set guioptions-=m " Menubar
+set guioptions-=T " Toolbar
+set mousefocus
+set mousehide
+highlight Normal guibg=black guifg=white
+
+" Autosave liberally. Use git!
+au FocusLost * :wa
+set autowrite
+
+" File types
 au BufNewFile,BufRead *.as setf actionscript
 au BufNewFile,BufRead *.fx setf javafx
 au BufNewFile,BufRead *.hx setf haxe
@@ -63,8 +84,8 @@ let Tlist_Exit_OnlyWindow = 1
 "map ,/ :s/^/\/\//<CR>
 "map ,, :s/^\/\///<CR>
 " Use NERD commenter instead
-map ,/ ,cl
-map ,? ,cu
+map <leader>/ <leader>cl
+map <leader>? <leader>cu
 
 command -nargs=* Make make <args> | cwindow 3
 "map <CR> :wa<CR>:make<CR>
@@ -103,6 +124,11 @@ command -nargs=1 -complete=tag Coreen !xdg-open http://localhost:8080/coreen/\#L
 nmap <leader>c :Coreen <cword><CR>
 
 nmap <leader>r :%s/\<<c-r>=expand("<cword>")<cr>\>/
+
+nmap <leader>t O// TODO(bruno): 
+
+let g:ackprg="ack-grep\\ -H\\ --nocolor\\ --nogroup\\ --column"
+nmap <leader>f :Ack 
 
 autocmd BufNewFile *.as call TemplateAS3()
 function! TemplateAS3()

@@ -34,6 +34,22 @@ snippet enum
 	    }
 	}
 
+snippet singleton
+	public class ${1:}
+	{
+	    public static function get instance () :$1
+	    {
+		return _instance;
+	    }
+
+	    /** @private */
+	    public function $1 ()
+	    {
+	    }
+
+	    protected static var _instance :$1;
+	}
+
 snippet event
 	public class ${1:} extends Event
 	{
