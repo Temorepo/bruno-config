@@ -36,7 +36,7 @@ set titlestring="Firefox"
 "set hintchars="aoeuidhtns"
 "set guioptions="rb"
 
-noremap e :emenu View.Tab Groups<CR>
+noremap e :javascript window.TabView.toggle()<CR>
 
 javascript <<EOF
 (function(){
