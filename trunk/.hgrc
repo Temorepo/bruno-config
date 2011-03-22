@@ -6,23 +6,25 @@ editor = /usr/share/doc/mercurial-common/examples/hgeditor
 #git = 1
 
 [extensions]
-extdiff =
+#extdiff =
 fetch =
 color =
 hgk = /usr/lib/pymodules/python2.6/hgext/hgk.py
 schemes =
 pager =
-bookmarks =
+#bookmarks =
 rebase =
-hgattic = /export/hgattic/attic.py
-hgext.bookmarks =
-hggit =
+hgshelve = /export/hgshelve/hgshelve.py
+#hgslurp = /home/bruno/hg-slurp.py
+#hgattic = /export/hgattic/attic.py
+#hgext.bookmarks =
+#hggit =
 
-[bookmarks]
-track.current = True
+#[bookmarks]
+#track.current = True
 
-[extdiff]
-cmd.vdi = vimdiff
+#[extdiff]
+#cmd.vdi = vimdiff
 
 [schemes]
 ooo = ssh://src.earth.threerings.net/
