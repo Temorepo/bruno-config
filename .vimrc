@@ -130,6 +130,9 @@ nmap <leader>t O// TODO(bruno):
 let g:ackprg="ack-grep\\ -H\\ --nocolor\\ --nogroup\\ --column"
 nmap <leader>f :Ack 
 
+highlight TrailingWhitespace ctermbg=red guibg=red
+autocmd Syntax * syn match TrailingWhitespace /\s\+\%#\@<!$/ containedin=ALL
+
 autocmd BufNewFile *.as call TemplateAS3()
 function! TemplateAS3()
     let path = expand("%:p")
@@ -157,3 +160,10 @@ function! TemplateJava()
     let classname = substitute(classname, "\\..*", "", "")
     let result = append(line("$"), [ "public class " . classname, "{", "}" ])
 endfunction
+
+function! ReWho()
+    wall
+    silent !/export/who/bin/asbuild main-client
+    silent !kill `cat /tmp/whoserver.pid`
+endfunction
+map <silent> <F5> :call ReWho()<CR>
