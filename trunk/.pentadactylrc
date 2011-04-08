@@ -26,7 +26,6 @@ noremap L N
 "autocmd LocationChange .* js modes.passAllKeys = /www.whirled.com\/#/.test(buffer.URL)
 "autocmd DownloadPost .* !notify-send "Download complete" "<file>"
 
-set editor="gnome-terminal -x vim -f"
 "set hls
 
 set defsearch="ddg"
