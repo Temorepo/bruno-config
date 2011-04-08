@@ -1,0 +1,24 @@
+#!/bin/sh
+
+# Updates tag files for projects in ~/.tags
+# Usage: tagup DIRS
+
+TAGROOT=$HOME/.tags
+
+if [ $# -lt 1 ]; then
+    DIRS=$PWD
+else
+    DIRS=$*
+fi
+
+for i in $DIRS; do
+    DIR="$( readlink -f "$( dirname "$i" )" )/$( basename "$i" )"
+    SRCDIR="$DIR/src"
+    if [ -d "$SRCDIR" ]; then
+        PROJECT=`echo $DIR | sed 's!/!_!g'`
+        TAGDIR=$TAGROOT/$PROJECT
+        mkdir -p $TAGDIR
+        echo Updating $(basename "$DIR")
+        ctags -R -f $TAGDIR/tags $SRCDIR
+    fi
+done

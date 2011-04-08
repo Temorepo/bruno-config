@@ -60,8 +60,7 @@ main = withConnection Session $ \ dbus -> do
     , ("S-M-t", windows W.swapDown)
     , ("S-M-n", windows W.swapUp)
     , ("<F9>", spawn "xsel -o | /home/bruno/bin/pastebin") -- TODO: Show clipboard in dzen
-    , ("<Print>", withFocused $ \w -> spawn ("/home/bruno/bin/screenshot " ++ show w))
-    , ("M-<F13>", spawn ("/home/bruno/bin/screenshot root"))
+    , ("<Print>", spawn ("/home/bruno/bin/screenshot"))
     , ("M-`", nextScreen)
     , ("S-M-`", shiftNextScreen)
     , ("M-0", shiftTo Next EmptyWS)

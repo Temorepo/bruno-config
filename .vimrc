@@ -61,6 +61,7 @@ set guioptions-=T " Toolbar
 set mousefocus
 set mousehide
 highlight Normal guibg=black guifg=white
+colorscheme desert
 
 " Autosave liberally. Use git!
 au FocusLost * :wa
@@ -108,6 +109,7 @@ command EditConfig sp ~/.vimrc
 "let g:SuperTabDefaultCompletionType = 'context'
 let g:haxe_build_hxml="build.hxml"
 "let g:globalHaxeLibs = ['templo', 'hxJSON']
+set tags=~/.tags/*/tags,./tags,tags
 
 highlight AutoSearch cterm=underline
 autocmd CursorMoved * silent! exe printf('match AutoSearch /\<%s\>/', expand('<cword>'))
