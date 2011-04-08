@@ -1,0 +1,16 @@
+[user]
+    name = Bruno Garcia
+    email = ah.duros@gmail.com
+
+[alias]
+    st = status
+    ci = commit
+    co = checkout
+    di = diff
+    lg = log --pretty=format:'%C(yellow)%h%Creset -%C(red)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+
+[color]
+    ui = auto
+
+[github]
+    user = aduros
