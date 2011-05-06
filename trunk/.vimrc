@@ -1,11 +1,12 @@
+"filetype off
+call pathogen#helptags()
+call pathogen#runtime_append_all_bundles()
+
 set nocompatible
 
 " Not sure why this was commented out
 " Might be required for NERD commenter
 filetype plugin on
-
-source ~/.vim/dvorak.vim
-"source ~/.vim/ant.vim
 
 " Options and parameters
 let mapleader=","
@@ -31,14 +32,6 @@ set nowrap
 set scrolloff=2
 set sidescrolloff=2
 
-" Key mappings
-
-map T 10j
-map N 10k
-
-map - :cnext<CR>
-map _ :cprevious<CR>
-
 set shiftwidth=4
 set softtabstop=4
 "set tabstop=4
@@ -49,6 +42,23 @@ set background=dark
 set incsearch
 set hls
 set autowrite
+
+" Key mappings
+
+map T 10j
+map N 10k
+
+map - :cnext<CR>
+map _ :cprevious<CR>
+
+noremap s l
+map n k
+map t j
+if version > 500
+	ounmap t
+endif
+noremap l n
+noremap L N
 
 " GUI options
 set guioptions-=r " Scrollbars
@@ -127,13 +137,16 @@ nmap <leader>c :Coreen <cword><CR>
 
 nmap <leader>r :%s/\<<c-r>=expand("<cword>")<cr>\>/
 
-nmap <leader>t O// TODO(bruno): 
-
 let g:ackprg="ack-grep\\ -H\\ --nocolor\\ --nogroup\\ --column"
 nmap <leader>f :Ack 
 
 highlight TrailingWhitespace ctermbg=red guibg=red
 autocmd Syntax * syn match TrailingWhitespace /\s\+\%#\@<!$/ containedin=ALL
+
+" Persistent undo
+set undofile
+au BufWritePre /tmp/* setlocal noundofile
+set undodir=/tmp
 
 autocmd BufNewFile *.as call TemplateAS3()
 function! TemplateAS3()
