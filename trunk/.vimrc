@@ -145,35 +145,44 @@ autocmd Syntax * syn match TrailingWhitespace /\s\+\%#\@<!$/ containedin=ALL
 
 " Persistent undo
 set undofile
-au BufWritePre /tmp/* setlocal noundofile
+autocmd BufWritePre /tmp/* setlocal noundofile
 set undodir=/tmp
 
-autocmd BufNewFile *.as call TemplateAS3()
-function! TemplateAS3()
+autocmd User plugin-template-loaded call s:template_keywords()
+
+function! s:template_keywords()
+    " The absolute path of the new file
     let path = expand("%:p")
 
-    let package = substitute(path, "^.*\/as\/", "", "")
+    " Short name of the file
+    let file = substitute(path, "^.*\/", "", "")
+
+    " Filename extension
+    let suffix = substitute(file, "^.*\\.", "", "")
+
+    " Part before the extension
+    let class = substitute(file, "\\..*", "", "")
+    silent! %s/%CLASS%/\=class/g
+
+    " Try to guess the package name from the path
+    let package = substitute(path, "^.*\/\\(" . suffix . "\\|src\\)\/", "", "")
     let package = substitute(package, "\/[^\/]*$", "", "")
     let package = substitute(package, "\/", ".", "g")
-    let result = append(0, "package " . package . " {")
+    silent! %s/%PACKAGE%/\=package/g
 
-    let classname = substitute(path, "^.*\/", "", "")
-    let classname = substitute(classname, "\\..*", "", "")
-    let result = append(line("$"), [ "public class " . classname, "{", "}", "}" ])
-endfunction
+    let header_path = substitute(path, "\/src/.*", "", "") . "/lib/SOURCE_HEADER"
+    if filereadable(header_path)
+        let header = join(readfile(header_path), "\n")
+        silent! %s/%SOURCE_HEADER%/\=header/g
+    elseif search("%SOURCE_HEADER%")
+        " Remove the entire line with SOURCE_HEADER if we don't have one
+        execute 'normal! "_dd'
+    endif
 
-autocmd BufNewFile *.java call TemplateJava()
-function! TemplateJava()
-    let path = expand("%:p")
-
-    let package = substitute(path, "^.*\/java\/", "", "")
-    let package = substitute(package, "\/[^\/]*$", "", "")
-    let package = substitute(package, "\/", ".", "g")
-    let result = append(0, "package " . package . ";")
-
-    let classname = substitute(path, "^.*\/", "", "")
-    let classname = substitute(classname, "\\..*", "", "")
-    let result = append(line("$"), [ "public class " . classname, "{", "}" ])
+    " Jump to %CURSOR%
+    if search("%CURSOR%")
+        execute 'normal! "_cf%'
+    endif
 endfunction
 
 function! ReWho()
