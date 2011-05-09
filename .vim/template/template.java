@@ -3,7 +3,7 @@ package %PACKAGE%;
 
 public class %CLASS%
 {
-    public function %CLASS% ()
+    public %CLASS% ()
     {%CURSOR%
     }
 }
