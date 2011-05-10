@@ -144,6 +144,9 @@ set undofile
 autocmd BufWritePre /tmp/* setlocal noundofile
 set undodir=/tmp
 
+" Always handle C-style comments nicely
+set formatoptions+=croq
+
 autocmd User plugin-template-loaded call s:template_keywords()
 
 function! s:template_keywords()
@@ -160,9 +163,14 @@ function! s:template_keywords()
     let class = substitute(file, "\\..*", "", "")
     silent! %s/%CLASS%/\=class/g
 
-    " Try to guess the package name from the path
-    let package = substitute(path, "^.*\/\\(" . suffix . "\\|src\\)\/", "", "")
-    let package = substitute(package, "\/[^\/]*$", "", "")
+    " Try to guess the relative path from the project root
+    let path = substitute(path, "^.*\/\\(" . suffix . "\\|src\\)\/", "", "")
+    silent! %s/%PATH%/\=path/g
+
+    let path_noextension = substitute(path, "\\..*$", "", "")
+    silent! %s/%PATH_NOEXTENSION%/\=path_noextension/g
+
+    let package = substitute(path, "\/[^\/]*$", "", "")
     let package = substitute(package, "\/", ".", "g")
     silent! %s/%PACKAGE%/\=package/g
 
