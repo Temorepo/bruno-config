@@ -134,7 +134,7 @@ nmap <leader>r :%s/\<<c-r>=expand("<cword>")<cr>\>/
 let g:ackprg="ack-grep\\ -H\\ --nocolor\\ --nogroup\\ --column"
 nmap <leader>f :Ack 
 
-nmap <leader>t :CommandT
+nmap <silent> <leader>t :CommandT<CR>
 
 highlight TrailingWhitespace ctermbg=red guibg=red
 autocmd Syntax * syn match TrailingWhitespace /\s\+\%#\@<!$/ containedin=ALL
