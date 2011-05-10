@@ -151,10 +151,10 @@ autocmd User plugin-template-loaded call s:template_keywords()
 
 function! s:template_keywords()
     " The absolute path of the new file
-    let path = expand("%:p")
+    let abspath = expand("%:p")
 
     " Short name of the file
-    let file = substitute(path, "^.*\/", "", "")
+    let file = substitute(abspath, "^.*\/", "", "")
 
     " Filename extension
     let suffix = substitute(file, "^.*\\.", "", "")
@@ -164,17 +164,17 @@ function! s:template_keywords()
     silent! %s/%CLASS%/\=class/g
 
     " Try to guess the relative path from the project root
-    let path = substitute(path, "^.*\/\\(" . suffix . "\\|src\\)\/", "", "")
-    silent! %s/%PATH%/\=path/g
+    let relpath = substitute(abspath, "^.*\/\\(" . suffix . "\\|src\\)\/", "", "")
+    silent! %s/%PATH%/\=relpath/g
 
-    let path_noextension = substitute(path, "\\..*$", "", "")
-    silent! %s/%PATH_NOEXTENSION%/\=path_noextension/g
+    let relpath_noextension = substitute(relpath, "\\..*", "", "")
+    silent! %s/%PATH_NOEXTENSION%/\=relpath_noextension/g
 
-    let package = substitute(path, "\/[^\/]*$", "", "")
+    let package = substitute(relpath, "\/[^\/]*$", "", "")
     let package = substitute(package, "\/", ".", "g")
     silent! %s/%PACKAGE%/\=package/g
 
-    let header_path = substitute(path, "\/src/.*", "", "") . "/lib/SOURCE_HEADER"
+    let header_path = substitute(abspath, "\/src/.*", "", "") . "/lib/SOURCE_HEADER"
     if filereadable(header_path)
         let header = join(readfile(header_path), "\n")
         silent! %s/%SOURCE_HEADER%/\=header/g
