@@ -1,0 +1,65 @@
+snippet enum
+	final class ${1:} extends Enum
+	{
+		finishedEnumerating($1);
+
+		public static function values () :Array
+		{
+			return Enum.values($1);
+		}
+
+		public static function valueOf (name :String) :$1
+		{
+			return Enum.valueOf($1, name) as $1;
+		}
+
+		/** @private */ function $1 (name :String)
+		{
+			super(name);
+		}
+	}
+snippet singleton
+	class ${1:}
+	{
+		public static function get instance () :$1
+		{
+			if (_instance == null) {
+				_instance = new $1();
+			}
+			return _instance;
+		}
+
+		/** @private */ function $1 ()
+		{
+		}
+
+		protected static var _instance :$1;
+	}
+snippet event
+	class ${1:} extends Event
+	{
+		public function $1 (type :String,
+			bubbles :Boolean = false, cancelable :Boolean = false)
+		{
+			super(type, bubbles, cancelable);
+		}
+
+		override public function clone () :Event
+		{
+			return new $1(type, bubbles, cancelable);
+		}
+	}
+snippet getter
+	function get ${1:} () :${2:} { return _$1 }
+snippet setter
+	function set ${1:} ($1 :${2:}) :void { _$1 = $1 }
+snippet watch
+	public function set ${1:} ($1 :${2:}) :void {
+		trace(new Error("Changed $1 to " + $1).getStackTrace());
+		_$1 = $1;
+	}
+	public function get $1 () :$2 {
+		trace(new Error("Accessed $1").getStackTrace());
+		return _$1;
+	}
+	private var _$1 :$2;
