@@ -85,12 +85,6 @@ au BufNewFile,BufRead *.mtt setf xhtml
 
 au FileType ant,xml,html set sw=2
 
-" actionscript language
-let tlist_actionscript_settings = 'actionscript;c:class;t:constant;f:method;p:property;v:member'
-let tlist_haxe_settings='haxe;f:functions;v:variables;c:classes;i:interfaces;e:enums;t:typedefs'
-let Tlist_Auto_Open = 0
-let Tlist_Exit_OnlyWindow = 1
-
 " commentify a block, highlight a block and then press ",/"
 "map ,/ :s/^/\/\//<CR>
 "map ,, :s/^\/\///<CR>
@@ -139,6 +133,8 @@ nmap <leader>r :%s/\<<c-r>=expand("<cword>")<cr>\>/
 
 let g:ackprg="ack-grep\\ -H\\ --nocolor\\ --nogroup\\ --column"
 nmap <leader>f :Ack 
+
+nmap <leader>t :CommandT
 
 highlight TrailingWhitespace ctermbg=red guibg=red
 autocmd Syntax * syn match TrailingWhitespace /\s\+\%#\@<!$/ containedin=ALL
