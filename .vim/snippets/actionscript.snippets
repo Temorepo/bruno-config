@@ -1,3 +1,42 @@
+snippet for
+	for (var ${1:ii} :int = 0; $1 < ${2:}; ++ii) {
+		${3}
+	}
+snippet forin
+	for (var ${1:k} :String in ${2:}) {
+		var v :${3:Object} = $2[$1];
+		${4:}
+	}
+snippet foreach
+	for each (var ${1:v} :${2:*} in ${3:}) {
+		${4:}
+	}
+snippet if
+	if (${1:}) {
+		${2:}
+	}
+snippet while
+	while (${1:}) {
+		${2:}
+	}
+snippet const
+	static const ${1} :${2:String} = ${3};
+snippet func
+	function (${1:..._}) :${2:void} {
+		${3:}
+	}
+snippet switch
+	switch (${1:}) {
+		case ${2:_}:
+			${3:}
+			break;
+		default:
+			// Nothing
+	}
+snippet case
+	case ${1:}:
+		${2:}
+		break;
 snippet enum
 	final class ${1:} extends Enum
 	{
@@ -50,11 +89,11 @@ snippet event
 		}
 	}
 snippet getter
-	function get ${1:} () :${2:} { return _$1 }
+	function get ${1:} () :${2:*} { return _$1 }
 snippet setter
-	function set ${1:} ($1 :${2:}) :void { _$1 = $1 }
+	function set ${1:} ($1 :${2:*}) :void { _$1 = $1 }
 snippet watch
-	public function set ${1:} ($1 :${2:}) :void {
+	public function set ${1:} ($1 :${2:*}) :void {
 		trace(new Error("Changed $1 to " + $1).getStackTrace());
 		_$1 = $1;
 	}
