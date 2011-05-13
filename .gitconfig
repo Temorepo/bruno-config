@@ -2,6 +2,9 @@
     name = Bruno Garcia
     email = ah.duros@gmail.com
 
+[core]
+    excludesfile = /home/bruno/.gitignore
+
 [alias]
     st = status
     ci = commit
