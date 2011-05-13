@@ -115,8 +115,8 @@ let g:haxe_build_hxml="build.hxml"
 "let g:globalHaxeLibs = ['templo', 'hxJSON']
 set tags=~/.tags/*/tags,./tags,tags
 
-highlight AutoSearch cterm=underline
-autocmd CursorMoved * silent! exe printf('match AutoSearch /\<%s\>/', expand('<cword>'))
+"highlight AutoSearch cterm=underline
+"autocmd CursorMoved * silent! exe printf('match AutoSearch /\<%s\>/', expand('<cword>'))
 
 " Auto importer
 function! Import(idx)
@@ -124,7 +124,7 @@ function! Import(idx)
     pyfile ~/.vim/import.py
 endfunction
 command! -nargs=* Import call Import(<q-args>)
-nmap ;i :pyfile ~/.vim/import.py<CR>
+nmap ;i :pyfile /export/assemblage/aspirin/vim/import.py<CR>
 
 command -nargs=1 -complete=tag Coreen !xdg-open http://localhost:8080/coreen/\#LIBRARY~search~<args>
 nmap <leader>c :Coreen <cword><CR>
@@ -194,4 +194,28 @@ function! ReWho()
     silent !/export/who/bin/asbuild main-client
     silent !kill `cat /tmp/whoserver.pid`
 endfunction
-map <silent> <F5> :call ReWho()<CR>
+
+function! OnVimBuildComplete(filename)
+    exec "cgetfile " . a:filename
+    cwindow
+    redraw
+    echo
+    if len(getqflist()) > 0
+        silent !notify-send "Compile FAILED" -i ~/.vim/icon-error.svg
+    else
+        silent !notify-send "Compile success" -i ~/.vim/icon-ok.svg
+    endif
+endfunction
+
+function! VimBuild()
+    silent wall
+    " TODO: Walk up the path and use the deepest vimbuild script
+    " TODO: Some way to intelligently set the errorformat/compiler
+    echo "Building..."
+    call AsyncCommand("./vimbuild " . expand("%:p"), "OnVimBuildComplete")
+endfunction
+map <silent> <F5> :call VimBuild()<CR>
+
+" Previous rebinds may screw up SELECT mode (used by snippets), so remove all
+" select mode mappings. Is this safe? Who knows!
+smapclear
