@@ -225,6 +225,8 @@ let g:compiler_gcc_ignore_unmatched_lines=1
 autocmd FileType cpp,c compiler gcc
 autocmd FileType haxe compiler haxe
 autocmd FileType actionscript compiler mxmlc
+autocmd FileType javascript compiler closure
+autocmd FileType java compiler ant
 
 " Previous rebinds may screw up SELECT mode (used by snippets), so remove all
 " select mode mappings. Is this safe? Who knows!
