@@ -216,10 +216,12 @@ function! VimBuild()
     silent wall
     " TODO: Walk up the path and use the deepest vimbuild script
     " TODO: Some way to intelligently set the errorformat/compiler
-    echo "Building..."
-    call AsyncCommand("./vimbuild " . expand("%:p"), "OnVimBuildComplete")
+    let dir = getcwd()
+    echo "Building " . substitute(dir, ".*/", "", "") . "..."
+    call AsyncCommand(dir . "/vimbuild " . expand("%:p"), "OnVimBuildComplete")
 endfunction
 map <silent> <F5> :call VimBuild()<CR>
+imap <silent> <F5> <C-O>:call VimBuild()<CR>
 
 let g:compiler_gcc_ignore_unmatched_lines=1
 autocmd FileType cpp,c compiler gcc
