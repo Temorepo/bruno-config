@@ -1,0 +1,5 @@
+.DS_Store
+.lock-wafbuild
+*.pyc
+.*.swp
+tags
