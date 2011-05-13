@@ -140,9 +140,11 @@ highlight TrailingWhitespace ctermbg=red guibg=red
 autocmd Syntax * syn match TrailingWhitespace /\s\+\%#\@<!$/ containedin=ALL
 
 " Persistent undo
-set undofile
-autocmd BufWritePre /tmp/* setlocal noundofile
-set undodir=/tmp
+if version >= 703
+    set undofile
+    autocmd BufWritePre /tmp/* setlocal noundofile
+    set undodir=/tmp
+endif
 
 " Always handle C-style comments nicely
 set formatoptions+=croq
@@ -189,10 +191,12 @@ function! s:template_keywords()
     endif
 endfunction
 
-function! ReWho()
-    wall
-    silent !/export/who/bin/asbuild main-client
-    silent !kill `cat /tmp/whoserver.pid`
+function! WasBuildSuccessful()
+    for qf in getqflist()
+        if qf.valid
+            return 0
+    endfor
+    return 1
 endfunction
 
 function! OnVimBuildComplete(filename)
@@ -200,10 +204,11 @@ function! OnVimBuildComplete(filename)
     cwindow
     redraw
     echo
-    if len(getqflist()) > 0
-        silent !notify-send "Compile FAILED" -i ~/.vim/icon-error.svg
+    " TODO: We should look at the exit code to see if the build was successful
+    if WasBuildSuccessful()
+        silent !notify-send "Build passed" -i ~/.vim/icon-ok.svg
     else
-        silent !notify-send "Compile success" -i ~/.vim/icon-ok.svg
+        silent !notify-send "Build FAILED" -i ~/.vim/icon-error.svg
     endif
 endfunction
 
@@ -215,6 +220,11 @@ function! VimBuild()
     call AsyncCommand("./vimbuild " . expand("%:p"), "OnVimBuildComplete")
 endfunction
 map <silent> <F5> :call VimBuild()<CR>
+
+let g:compiler_gcc_ignore_unmatched_lines=1
+autocmd FileType cpp,c compiler gcc
+autocmd FileType haxe compiler haxe
+autocmd FileType actionscript compiler mxmlc
 
 " Previous rebinds may screw up SELECT mode (used by snippets), so remove all
 " select mode mappings. Is this safe? Who knows!
