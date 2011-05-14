@@ -85,34 +85,17 @@ au BufNewFile,BufRead *.mtt setf xhtml
 
 au FileType ant,xml,html set sw=2
 
-" commentify a block, highlight a block and then press ",/"
-"map ,/ :s/^/\/\//<CR>
-"map ,, :s/^\/\///<CR>
-" Use NERD commenter instead
+" Comment and uncomment a block
 map <leader>/ <leader>cl
 map <leader>? <leader>cu
-
-command -nargs=* Make make <args> | cwindow 3
-"map <CR> :wa<CR>:make<CR>
 
 " Handy
 "noremap - ^
 "noremap _ $
 noremap H <C-O>
 noremap S <C-I>
-command EditConfig sp ~/.vimrc
+command EditConfig topleft sp ~/.vimrc
 
-" Eclim
-"map <silent> <buffer> ji :JavaImport<cr>
-"map <silent> <buffer> jg :JavaSearchContext<cr>
-"map <silent> <buffer> jc :JavaCorrect<cr>
-
-"let st = g:snip_start_tag
-"let et = g:snip_end_tag
-"let cd = g:snip_elem_delim
-"let g:SuperTabDefaultCompletionType = 'context'
-let g:haxe_build_hxml="build.hxml"
-"let g:globalHaxeLibs = ['templo', 'hxJSON']
 set tags=~/.tags/*/tags,./tags,tags
 
 "highlight AutoSearch cterm=underline
@@ -200,10 +183,16 @@ function! WasBuildSuccessful()
 endfunction
 
 function! OnVimBuildComplete(filename)
+    let curwin = winnr()
     exec "cgetfile " . a:filename
-    cwindow
-    redraw
+    botright cwindow
+
+    redraw!
     echo
+
+    " Jump back and prevent the quickfix window from stealing focus
+    exec curwin . "wincmd w"
+
     " TODO: We should look at the exit code to see if the build was successful
     if WasBuildSuccessful()
         silent !notify-send "Build passed" -i ~/.vim/icon-ok.svg
@@ -229,6 +218,10 @@ autocmd FileType haxe compiler haxe
 autocmd FileType actionscript compiler mxmlc
 autocmd FileType javascript compiler closure
 autocmd FileType java compiler ant
+
+" Change the windows these commands create
+cnoreabbrev sta vert :sta
+cnoreabbrev help to :help
 
 " Previous rebinds may screw up SELECT mode (used by snippets), so remove all
 " select mode mappings. Is this safe? Who knows!
