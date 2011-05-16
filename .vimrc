@@ -4,6 +4,15 @@ call pathogen#runtime_append_all_bundles()
 
 set nocompatible
 
+" To allow reloading, clear out vimrc autocmds
+" Also since I like to spread autocmds throughout this entire file and augroup
+" only works on unbroken sequences of :autocmd, set up Vautocmd to use the
+" vimrc group.
+augroup vimrc | autocmd!
+command! -nargs=* Vautocmd autocmd vimrc <args>
+
+Vautocmd BufWritePost $MYVIMRC source %
+
 " Not sure why this was commented out
 " Might be required for NERD commenter
 filetype plugin on
@@ -22,8 +31,6 @@ set backupdir=/tmp
 
 set gdefault
 
-syntax on
-
 "set cindent
 set smartindent
 set showmode
@@ -41,7 +48,6 @@ syntax on
 set background=dark
 set incsearch
 set hls
-set autowrite
 
 " Key mappings
 
@@ -68,22 +74,23 @@ set guioptions-=L
 set guioptions-=t
 set guioptions-=m " Menubar
 set guioptions-=T " Toolbar
+set guioptions+=c " Console dialogs
 set mousefocus
 set mousehide
 highlight Normal guibg=black guifg=white
 colorscheme desert
 
 " Autosave liberally. Use git!
-au FocusLost * :wa
+Vautocmd FocusLost * :wa
 set autowrite
 
 " File types
-au BufNewFile,BufRead *.as setf actionscript
-au BufNewFile,BufRead *.fx setf javafx
-au BufNewFile,BufRead *.hx setf haxe
-au BufNewFile,BufRead *.mtt setf xhtml
+Vautocmd BufNewFile,BufRead *.as setf actionscript
+Vautocmd BufNewFile,BufRead *.fx setf javafx
+Vautocmd BufNewFile,BufRead *.hx setf haxe
+Vautocmd BufNewFile,BufRead *.mtt setf xhtml
 
-au FileType ant,xml,html set sw=2
+Vautocmd FileType ant,xml,html set sw=2
 
 " Comment and uncomment a block
 map <leader>/ <leader>cl
@@ -94,12 +101,12 @@ map <leader>? <leader>cu
 "noremap _ $
 noremap H <C-O>
 noremap S <C-I>
-command EditConfig topleft sp ~/.vimrc
+command! EditConfig topleft sp $MYVIMRC
 
 set tags=~/.tags/*/tags,./tags,tags
 
-"highlight AutoSearch cterm=underline
-"autocmd CursorMoved * silent! exe printf('match AutoSearch /\<%s\>/', expand('<cword>'))
+"highlight AutoSearch term=italic cterm=italic gui=italic
+"Vautocmd CursorMoved * silent! exe printf('match AutoSearch /\<%s\>/', expand('<cword>'))
 
 " Auto importer
 function! Import(idx)
@@ -109,9 +116,11 @@ endfunction
 command! -nargs=* Import call Import(<q-args>)
 nmap ;i :pyfile /export/assemblage/aspirin/vim/import.py<CR>
 
-command -nargs=1 -complete=tag Coreen !xdg-open http://localhost:8080/coreen/\#LIBRARY~search~<args>
+" Open the symbol under the cursor in Coreen
+command! -nargs=1 -complete=tag Coreen !xdg-open http://localhost:8080/coreen/\#LIBRARY~search~<args>
 nmap <leader>c :Coreen <cword><CR>
 
+" Quickly search and replace the word under the cursor
 nmap <leader>r :%s/\<<c-r>=expand("<cword>")<cr>\>/
 
 let g:ackprg="ack-grep\\ -H\\ --nocolor\\ --nogroup\\ --column"
@@ -120,20 +129,19 @@ nmap <leader>f :Ack
 nmap <silent> <leader>t :CommandT<CR>
 
 highlight TrailingWhitespace ctermbg=red guibg=red
-autocmd Syntax * syn match TrailingWhitespace /\s\+\%#\@<!$/ containedin=ALL
+Vautocmd Syntax * syn match TrailingWhitespace /\s\+\%#\@<!$/ containedin=ALL
 
 " Persistent undo
 if version >= 703
     set undofile
-    autocmd BufWritePre /tmp/* setlocal noundofile
+    Vautocmd BufWritePre /tmp/* setlocal noundofile
     set undodir=/tmp
 endif
 
 " Always handle C-style comments nicely
 set formatoptions+=croq
 
-autocmd User plugin-template-loaded call s:template_keywords()
-
+Vautocmd User plugin-template-loaded call s:template_keywords()
 function! s:template_keywords()
     " The absolute path of the new file
     let abspath = expand("%:p")
@@ -212,16 +220,31 @@ endfunction
 map <silent> <F5> :call VimBuild()<CR>
 imap <silent> <F5> <C-O>:call VimBuild()<CR>
 
+" Compilers
 let g:compiler_gcc_ignore_unmatched_lines=1
-autocmd FileType cpp,c compiler gcc
-autocmd FileType haxe compiler haxe
-autocmd FileType actionscript compiler mxmlc
-autocmd FileType javascript compiler closure
-autocmd FileType java compiler ant
+Vautocmd FileType cpp,c compiler gcc
+Vautocmd FileType haxe compiler haxe
+Vautocmd FileType actionscript compiler mxmlc
+Vautocmd FileType javascript compiler closure
+Vautocmd FileType java compiler ant
 
 " Change the windows these commands create
+" TODO: Perhaps have an autocmd that arranges new windows instead?
+cnoreabbrev sp vsp
 cnoreabbrev sta vert :sta
-cnoreabbrev help to :help
+set winwidth=100
+"set splitright
+
+" (Experimental)
+function! ArrangeWindow()
+    if &buftype == "help"
+        wincmd K
+    endif
+    "if &buftype == "" && expand("%") != "GoToFile"
+    "    wincmd H
+    "endif
+endfunction
+Vautocmd BufWinEnter * call ArrangeWindow()
 
 " Previous rebinds may screw up SELECT mode (used by snippets), so remove all
 " select mode mappings. Is this safe? Who knows!
