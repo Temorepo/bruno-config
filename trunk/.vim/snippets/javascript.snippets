@@ -1,0 +1,38 @@
+snippet for
+	for (var ${1:ii} = 0; $1 < ${2:}; ++ii) {
+		${3:}
+	}
+snippet forin
+	for (var ${1:k} in ${2:}) {
+		var v = $2[$1];
+		${3:}
+	}
+snippet foreach
+	for (var ${1:ii} = 0; $1 < ${2:}.length; ++ii) {
+		var v = $2[$1];
+		${3:}
+	}
+snippet if
+	if (${1:}) {
+		${2:}
+	}
+snippet while
+	while (${1:}) {
+		${2:}
+	}
+snippet func
+	function (${1:}) {
+		${2:}
+	}
+snippet switch
+	switch (${1:}) {
+		case ${2:_}:
+			${3:}
+			break;
+		default:
+			// Nothing
+	}
+snippet case
+	case ${1:}:
+		${2:}
+		break;
