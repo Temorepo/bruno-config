@@ -20,14 +20,6 @@ noremap P :tabmove! +1<CR>
 noremap l n
 noremap L N
 
-"noremap ] :twitter 
-"noremap } :share 
-
-"autocmd LocationChange .* js modes.passAllKeys = /www.whirled.com\/#/.test(buffer.URL)
-"autocmd DownloadPost .* !notify-send "Download complete" "<file>"
-
-"set hls
-
 set defsearch="ddg"
 
 "set! browser.tabs.autoHide=true
@@ -39,25 +31,16 @@ noremap e :javascript window.TabView.toggle()<CR>
 
 javascript <<EOF
 (function(){
-    // Broken in FF4, no status bar
-//    var feedPanel = document.createElement("statusbarpanel");
-//    feedPanel.setAttribute("id", "feed-panel-clone");
-//    feedPanel.appendChild(document.getElementById("feed-button"));
-//    feedPanel.firstChild.setAttribute("style", "padding: 0; max-height: 16px;");
-//    document.getElementById("status-bar")
-//            .insertBefore(feedPanel, document.getElementById("security-button"));
-
-//    dactyl.modules.commands.addUserCommand(["share"], 'Share current URL to Twitter', function (args) {
-//        var description = (args.length > 0) ? args.join(" ") : "\""+ dactyl.modules.buffer.title + "\"";
-//        var url = util.httpGet("http://tinyurl.com/api-create.php?url=" + dactyl.modules.buffer.URL).responseText;
-//        dactyl.execute(":twitter " + description + " " + url);
-//    });
 
     // Keep the status bar the same height even if large icons have been added to it
     //document.getElementById("addon-bar").style.maxHeight = "16px";
 
     dactyl.modules.commands.addUserCommand(["chrome"], "Open current URL in Chrome", function (args) {
         dactyl.execute("!google-chrome '" + dactyl.modules.buffer.URL + "' &", null, true);
+    });
+
+    dactyl.modules.commands.addUserCommand(["translate"], "Translate the current page", function (args) {
+        dactyl.open("http://translate.google.com/translate?u=" + escape(dactyl.modules.buffer.URL));
     });
 
 })();
