@@ -190,7 +190,7 @@ function! WasBuildSuccessful()
     return 1
 endfunction
 
-function! OnVimBuildComplete(filename)
+function! ShowErrors(filename)
     let curwin = winnr()
     exec "cgetfile " . a:filename
     botright cwindow
@@ -200,6 +200,10 @@ function! OnVimBuildComplete(filename)
 
     " Jump back and prevent the quickfix window from stealing focus
     exec curwin . "wincmd w"
+endfunction
+
+function! OnVimBuildComplete(filename)
+    call ShowErrors(a:filename)
 
     " TODO: We should look at the exit code to see if the build was successful
     if WasBuildSuccessful()
@@ -227,6 +231,7 @@ Vautocmd FileType haxe compiler haxe
 Vautocmd FileType actionscript compiler mxmlc
 Vautocmd FileType javascript compiler closure
 Vautocmd FileType java compiler ant
+Vautocmd FileType xml compiler xmllint
 
 " Change the windows these commands create
 " TODO: Perhaps have an autocmd that arranges new windows instead?
@@ -245,6 +250,8 @@ function! ArrangeWindow()
     "endif
 endfunction
 Vautocmd BufWinEnter * call ArrangeWindow()
+
+Vautocmd BufWritePost *.xml call AsyncCommand("xmllint --postvalid " . expand("%:p"), "ShowErrors")
 
 " Previous rebinds may screw up SELECT mode (used by snippets), so remove all
 " select mode mappings. Is this safe? Who knows!
