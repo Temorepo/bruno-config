@@ -31,6 +31,8 @@ set backupdir=/tmp
 
 set gdefault
 
+set confirm
+
 "set cindent
 set smartindent
 set showmode
@@ -49,13 +51,17 @@ set background=dark
 set incsearch
 set hls
 
+set wildignore+=*/dist,*/build
+set wildignore+=*.pyc,*.o,*.cmo,*.cmi,*.cmx,*.annot,*.class,*.jar,*.swc,.svn,.hg,.git
+
 " Key mappings
 
 map T 10j
 map N 10k
 
-map - :cnext<CR>
-map _ :cprevious<CR>
+" Cycle through build errors (and ack results)
+map - :cc<CR>:cnext<CR>
+map _ :cc<CR>:cprevious<CR>
 
 noremap s l
 map n k
@@ -80,8 +86,8 @@ set mousehide
 highlight Normal guibg=black guifg=white
 colorscheme desert
 
-" Autosave liberally. Use git!
-Vautocmd FocusLost * :wa
+" Autosave liberally. Use version control!
+Vautocmd FocusLost * if !&readonly | wall | endif
 set autowrite
 
 " File types
@@ -90,7 +96,7 @@ Vautocmd BufNewFile,BufRead *.fx setf javafx
 Vautocmd BufNewFile,BufRead *.hx setf haxe
 Vautocmd BufNewFile,BufRead *.mtt setf xhtml
 
-Vautocmd FileType ant,xml,html set sw=2
+Vautocmd FileType ant,xml,html setlocal sw=2
 
 " Comment and uncomment a block
 map <leader>/ <leader>cl
@@ -102,6 +108,10 @@ map <leader>? <leader>cu
 noremap H <C-O>
 noremap S <C-I>
 command! EditConfig topleft sp $MYVIMRC
+
+" Spacebar switches windows
+noremap <Space> <C-W>w
+noremap <S-Space> <C-W>W
 
 set tags=~/.tags/*/tags,./tags,tags
 
@@ -123,8 +133,16 @@ nmap <leader>c :Coreen <cword><CR>
 " Quickly search and replace the word under the cursor
 nmap <leader>r :%s/\<<c-r>=expand("<cword>")<cr>\>/
 
-let g:ackprg="ack-grep\\ -H\\ --nocolor\\ --nogroup\\ --column"
-nmap <leader>f :Ack 
+let g:ackprg="ack -H --nocolor --nogroup --column --ignore-dir=dist --ignore-dir=build"
+nmap <leader>f :Ack<space>
+nmap <leader>F :Ack <cword><CR>
+
+let g:CommandTMaxDepth=30
+let g:CommandTMaxHeight=20
+let g:CommandTMatchWindowAtTop=1
+
+nmap <leader>g :tag<space>
+nmap <leader>G :vert stag<space>
 
 nmap <silent> <leader>t :CommandT<CR>
 
@@ -251,7 +269,11 @@ function! ArrangeWindow()
 endfunction
 Vautocmd BufWinEnter * call ArrangeWindow()
 
+" Validate XML syntax on write (skips schema validation)
 Vautocmd BufWritePost *.xml call AsyncCommand("xmllint --postvalid " . expand("%:p"), "ShowErrors")
+
+" Opens the edit command on the current directory
+"cnoremap ced e <c-r>=expand("%:h")<cr>/
 
 " Previous rebinds may screw up SELECT mode (used by snippets), so remove all
 " select mode mappings. Is this safe? Who knows!
