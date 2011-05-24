@@ -17,7 +17,7 @@ Vautocmd BufWritePost $MYVIMRC source %
 " Might be required for NERD commenter
 filetype plugin on
 
-" Options and parameters
+" General options
 let mapleader=","
 
 set backspace=2
@@ -109,7 +109,11 @@ noremap H <C-O>
 noremap S <C-I>
 command! EditConfig topleft sp $MYVIMRC
 
-" Spacebar switches windows
+" Dvorak HTNS switches windows
+noremap <C-H> <C-W>h
+noremap <C-T> <C-W>j
+noremap <C-N> <C-W>k
+noremap <C-S> <C-W>l
 noremap <Space> <C-W>w
 noremap <S-Space> <C-W>W
 
@@ -142,7 +146,7 @@ let g:CommandTMaxHeight=20
 let g:CommandTMatchWindowAtTop=1
 
 nmap <leader>g :tag<space>
-nmap <leader>G :vert stag<space>
+nmap <leader>G :stag<space>
 
 nmap <silent> <leader>t :CommandT<CR>
 
@@ -251,23 +255,58 @@ Vautocmd FileType javascript compiler closure
 Vautocmd FileType java compiler ant
 Vautocmd FileType xml compiler xmllint
 
-" Change the windows these commands create
-" TODO: Perhaps have an autocmd that arranges new windows instead?
-cnoreabbrev sp vsp
-cnoreabbrev sta vert :sta
+" Window management
 set winwidth=100
 "set splitright
 
 " (Experimental)
-function! ArrangeWindow()
-    if &buftype == "help"
-        wincmd K
+" Layout windows by their type. Help windows will always be openned at the
+" very top, file edit windows will always be vertically split below that, and
+" everything else along the very bottom.
+function! ArrangeWindows()
+    if expand("%") == "GoToFile"
+        return " Don't react to Command-T
     endif
-    "if &buftype == "" && expand("%") != "GoToFile"
-    "    wincmd H
-    "endif
+
+    let bookmark = bufnr("%")
+    let top = []
+    let middle = []
+    let bottom = []
+
+    let wincount = winnr("$")
+    for ii in range(1, wincount)
+        let buf = winbufnr(ii)
+        let buftype = getbufvar(buf, "&buftype")
+        let readonly = getbufvar(buf, "&readonly")
+        if buftype == "help"
+            let top = add(top, buf)
+        elseif buftype == ""
+            let middle = add(middle, buf)
+        else
+            let bottom = add(bottom, buf)
+        endif
+    endfor
+
+    for buf in middle
+        exec bufwinnr(buf) . "wincmd w"
+        wincmd L
+    endfor
+    for buf in top
+        exec bufwinnr(buf) . "wincmd w"
+        wincmd K
+        "resize 20
+    endfor
+    for buf in bottom
+        exec bufwinnr(buf) . "wincmd w"
+        wincmd J
+        resize 10
+    endfor
+
+    " Jump back to the original window
+    exec bufwinnr(bookmark) . "wincmd w"
 endfunction
-Vautocmd BufWinEnter * call ArrangeWindow()
+"Vautocmd BufWinEnter * call ArrangeWindows()
+Vautocmd BufNewFile,BufRead * call ArrangeWindows()
 
 " Validate XML syntax on write (skips schema validation)
 Vautocmd BufWritePost *.xml call AsyncCommand("xmllint --postvalid " . expand("%:p"), "ShowErrors")
