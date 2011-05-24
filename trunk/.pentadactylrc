@@ -27,6 +27,10 @@ set titlestring="Firefox"
 "set hintchars="aoeuidhtns"
 "set guioptions="rb"
 
+set mapleader=,
+set hlfind
+set incfind
+
 noremap e :javascript window.TabView.toggle()<CR>
 
 javascript <<EOF
