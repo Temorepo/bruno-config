@@ -13,6 +13,22 @@ if !exists("g:ackprg")
 	let g:ackprg="ack -H --nocolor --nogroup --column"
 endif
 
+function! OnAckComplete(filename)
+    let errorformat_bak=&errorformat
+    try
+        let curwin = winnr()
+
+        let &errorformat=g:ackformat
+        exec "cgetfile " . a:filename
+
+        cwindow
+        redraw!
+        exec curwin . "wincmd w"
+    finally
+        let &errorformat=errorformat_bak
+    endtry
+endfunction
+
 function! s:Ack(cmd, args)
     redraw
     echo "Searching ..."
@@ -31,37 +47,16 @@ function! s:Ack(cmd, args)
         let g:ackformat="%f:%l:%c:%m"
     end
 
-    let grepprg_bak=&grepprg
-    let grepformat_bak=&grepformat
-    try
-        let &grepprg=g:ackprg
-        let &grepformat=g:ackformat
-        silent execute a:cmd . " " . l:grepargs
-    finally
-        let &grepprg=grepprg_bak
-        let &grepformat=grepformat_bak
-    endtry
+    call AsyncCommand(g:ackprg . " " . l:grepargs, "OnAckComplete")
 
-    if a:cmd =~# '^l'
-        botright lopen
-    else
-        botright copen
-    endif
-
-    " TODO: Document this!
-    exec "nnoremap <silent> <buffer> q :ccl<CR>"
-    exec "nnoremap <silent> <buffer> t <C-W><CR><C-W>T"
-    exec "nnoremap <silent> <buffer> T <C-W><CR><C-W>TgT<C-W><C-W>"
-    exec "nnoremap <silent> <buffer> o <CR>"
-    exec "nnoremap <silent> <buffer> go <CR><C-W><C-W>"
-
+    " TODO(bruno): This should be done in OnAckComplete, but AsyncCommand
+    " can't yet be pass custom args to the callback.
+    "
     " If highlighting is on, highlight the search keyword.
     if exists("g:ackhighlight")
         let @/=a:args
         set hlsearch
     end
-
-    redraw!
 endfunction
 
 function! s:AckFromSearch(cmd, args)
