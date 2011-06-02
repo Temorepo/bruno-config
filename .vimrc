@@ -99,6 +99,7 @@ Vautocmd BufNewFile,BufRead *.mtt setf xhtml
 Vautocmd FileType ant,xml,html setlocal sw=2
 
 " Comment and uncomment a block
+let NERDSpaceDelims=1
 map <leader>/ <leader>cl
 map <leader>? <leader>cu
 
