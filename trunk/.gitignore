@@ -2,4 +2,5 @@
 .lock-wafbuild
 *.pyc
 .*.swp
+.*.swo
 tags
