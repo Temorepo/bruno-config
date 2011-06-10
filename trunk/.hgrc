@@ -1,6 +1,7 @@
 [ui]
 username = Bruno Garcia <bruno@threerings.net>
 editor = /usr/share/doc/mercurial-common/examples/hgeditor
+editor = gvim -f -c start
 
 #[diff]
 #git = 1
