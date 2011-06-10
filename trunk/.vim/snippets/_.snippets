@@ -3,6 +3,6 @@ snippet /*
 	 * ${1}
 	 */
 snippet todo
-	// TODO(`$USER`): 
+	`substitute(substitute(&commentstring, "%s", " TODO(" . $USER . "): ${1} ", ""), " $", "", "")`
 snippet fixme
-	// FIXME(`$USER`): 
+	`substitute(substitute(&commentstring, "%s", " FIXME(" . $USER . "): ${1} ", ""), " $", "", "")`
