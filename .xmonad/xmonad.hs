@@ -1,13 +1,19 @@
 import XMonad
+import XMonad.Config.Desktop
 import XMonad.Config.Gnome
 import XMonad.Util.EZConfig
 import qualified XMonad.StackSet as W
 import qualified Data.Map as M
 
-import XMonad.Hooks.ManageDocks
-import XMonad.Hooks.DynamicLog
-import XMonad.Hooks.SetWMName
 import XMonad.Actions.CycleWS
+import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.SetWMName
+
+import XMonad.Layout.LimitWindows
+import XMonad.Layout.Magnifier
+import XMonad.Layout.NoBorders
+import XMonad.Layout.Named
 
 import DBus
 import DBus.Connection
@@ -27,6 +33,10 @@ getWellKnownName dbus = tryGetName `catchDyn` (\ (DBus.Error _ _) ->
     sendWithReplyAndBlock dbus namereq 0
     return ()
 
+myLayout = named "Tall" layout ||| named "Wide" (Mirror layout) ||| noBorders Full
+    where
+        layout = magnifiercz' 1.3 (Tall 1 (3/100) 0.6)
+
 main = withConnection Session $ \ dbus -> do
   putStrLn "Getting well-known name."
   getWellKnownName dbus
@@ -34,10 +44,10 @@ main = withConnection Session $ \ dbus -> do
   xmonad $ gnomeConfig {
       logHook    = dynamicLogWithPP $ defaultPP {
                    ppOutput   = \ str -> do
-                     let str'  = "<span font=\"Terminus 9 Bold\">" ++ str ++ 
+                     let str'  = "<span font=\"Terminus 9 Bold\">" ++ str ++
                                  "</span>"
                          str'' = sanitize str'
-                     msg <- newSignal "/org/xmonad/Log" "org.xmonad.Log" 
+                     msg <- newSignal "/org/xmonad/Log" "org.xmonad.Log"
                                 "Update"
                      addArgs msg [String str'']
                      -- If the send fails, ignore it.
@@ -52,6 +62,7 @@ main = withConnection Session $ \ dbus -> do
                  , ppUrgent   = pangoColor "red"
                  , ppLayout   = pangoColor "#999999"
                  },
+        layoutHook = desktopLayoutModifiers $ myLayout,
         startupHook = setWMName "LG3D" -- Makes Java GUIs work
     } `additionalKeysP` (
     [ ("M-d", kill)
