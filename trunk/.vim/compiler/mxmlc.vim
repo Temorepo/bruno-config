@@ -6,4 +6,6 @@ let current_compiler = "mxmlc"
 setlocal errorformat=
     \%E%f(%l):\ col:\ %c\ Error:\ %m,
     \%W%f(%l):\ col:\ %c\ Warning:\ %m,
+    \%E%f:\ Error:\ %m,
+    \%W%f:\ Warning:\ %m,
     \%-G%.%#
