@@ -249,14 +249,6 @@ endfunction
 map <silent> <F5> :call VimBuild()<CR>
 imap <silent> <F5> <C-O>:call VimBuild()<CR>
 
-" function! TestAsync2(filename)
-"     echo a:filename
-" endfunction
-" function! TestAsync()
-"     echo "ack 'test ing' /tmp"
-"     call AsyncCommand("ack \"test ing\" /tmp", "TestAsync2")
-" endfunction
-
 " Compilers
 let g:compiler_gcc_ignore_unmatched_lines=1
 Vautocmd FileType cpp,c compiler gcc
