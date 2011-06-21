@@ -10,8 +10,10 @@
 
 " Location of the ack utility
 if !exists("g:ackprg")
-	let g:ackprg="ack -H --nocolor --nogroup --column"
+    let g:ackprg="ack -H --nocolor --nogroup --column"
 endif
+
+let g:last_ack_command=""
 
 function! OnAckComplete(filename)
     let errorformat_bak=&errorformat
@@ -22,7 +24,10 @@ function! OnAckComplete(filename)
         exec "cgetfile " . a:filename
 
         cwindow
+        let w:quickfix_title=g:last_ack_command
         redraw!
+
+        " Vim switches to the quickfix window. Jump back to where we were
         exec curwin . "wincmd w"
     finally
         let &errorformat=errorformat_bak
@@ -47,7 +52,8 @@ function! s:Ack(cmd, args)
         let g:ackformat="%f:%l:%c:%m,%f:%l:%m"
     end
 
-    call AsyncCommand(g:ackprg . " " . l:grepargs, "OnAckComplete")
+    let g:last_ack_command=g:ackprg . " " . l:grepargs
+    call AsyncCommand(g:last_ack_command, "OnAckComplete")
 
     " TODO(bruno): This should be done in OnAckComplete, but AsyncCommand
     " can't yet be pass custom args to the callback.
