@@ -108,7 +108,7 @@ map <leader>? <leader>cu
 "noremap _ $
 noremap H <C-O>
 noremap S <C-I>
-command! EditConfig topleft sp $MYVIMRC
+command! EditConfig sp $MYVIMRC
 
 " Dvorak HTNS switches windows
 noremap <C-H> <C-W>h
@@ -117,6 +117,8 @@ noremap <C-N> <C-W>k
 noremap <C-S> <C-W>l
 noremap <Space> <C-W>w
 noremap <S-Space> <C-W>W
+
+inoremap { {<CR>}<ESC>O
 
 set tags=~/.tags/*/tags,./tags,tags
 
@@ -138,9 +140,9 @@ nmap <leader>c :Coreen <cword><CR>
 " Quickly search and replace the word under the cursor
 nmap <leader>r :%s/\<<c-r>=expand("<cword>")<cr>\>/
 
-let g:ackprg="ack -H --nocolor --nogroup --column --ignore-dir=dist --ignore-dir=build"
+let g:ackprg="ack-grep -H --nocolor --nogroup --column --ignore-dir=dist --ignore-dir=build"
+let g:ackhighlight=1
 nmap <leader>f :Ack<space>
-nmap <leader>F :Ack <cword><CR>
 
 let g:CommandTMaxDepth=30
 let g:CommandTMaxHeight=20
@@ -216,7 +218,7 @@ endfunction
 function! ShowErrors(filename)
     let curwin = winnr()
     exec "cgetfile " . a:filename
-    botright cwindow
+    cwindow
 
     redraw!
     echo
@@ -241,11 +243,19 @@ function! VimBuild()
     " TODO: Walk up the path and use the deepest vimbuild script
     " TODO: Some way to intelligently set the errorformat/compiler
     let dir = getcwd()
-    echo "Building " . substitute(dir, ".*/", "", "") . "..."
+    echo "Building " . substitute(dir, ".*/", "", "") . " ..."
     call AsyncCommand(dir . "/vimbuild " . expand("%:p"), "OnVimBuildComplete")
 endfunction
 map <silent> <F5> :call VimBuild()<CR>
 imap <silent> <F5> <C-O>:call VimBuild()<CR>
+
+" function! TestAsync2(filename)
+"     echo a:filename
+" endfunction
+" function! TestAsync()
+"     echo "ack 'test ing' /tmp"
+"     call AsyncCommand("ack \"test ing\" /tmp", "TestAsync2")
+" endfunction
 
 " Compilers
 let g:compiler_gcc_ignore_unmatched_lines=1
@@ -264,6 +274,29 @@ set winwidth=100
 " Layout windows by their type. Help windows will always be openned at the
 " very top, file edit windows will always be vertically split below that, and
 " everything else along the very bottom.
+function! IsMiddleWindow(buftype)
+    return a:buftype == ""
+endfunction
+
+"Vautocmd BufNewFile,BufRead * if &buftype == "quickfix" | cc | endif
+
+let RecentWindows = []
+function! OnWindowEnter()
+    if expand("%") == "GoToFile"
+        return " Don't react to Command-T
+    endif
+    if !IsMiddleWindow(&buftype)
+        return
+    endif
+    let buf = bufnr("%")
+    let idx = index(g:RecentWindows, buf)
+    if idx >= 0
+        let _ = remove(g:RecentWindows, idx)
+    endif
+    let g:RecentWindows = insert(g:RecentWindows, buf)[:1]
+endfunction
+"Vautocmd BufRead,WinEnter * call OnWindowEnter()
+
 function! ArrangeWindows()
     if expand("%") == "GoToFile"
         return " Don't react to Command-T
@@ -278,19 +311,23 @@ function! ArrangeWindows()
     for ii in range(1, wincount)
         let buf = winbufnr(ii)
         let buftype = getbufvar(buf, "&buftype")
-        let readonly = getbufvar(buf, "&readonly")
-        if buftype == "help"
-            let top = add(top, buf)
-        elseif buftype == ""
+        if IsMiddleWindow(buftype)
             let middle = add(middle, buf)
+        elseif buftype == "help"
+            let top = add(top, buf)
         else
             let bottom = add(bottom, buf)
         endif
     endfor
 
+    "call OnWindowEnter()
     for buf in middle
         exec bufwinnr(buf) . "wincmd w"
-        wincmd L
+        if len(g:RecentWindows) < 2 || index(g:RecentWindows, buf) >= 0
+            wincmd L
+        else
+            close
+        endif
     endfor
     for buf in top
         exec bufwinnr(buf) . "wincmd w"
@@ -309,11 +346,39 @@ endfunction
 "Vautocmd BufWinEnter * call ArrangeWindows()
 Vautocmd BufNewFile,BufRead * call ArrangeWindows()
 
+function! ToggleWindow()
+    if len(g:RecentWindows) < 2
+        return
+    endif
+    let buf = bufnr("%")
+    let dest = g:RecentWindows[0]
+    if buf == dest
+        let dest = g:RecentWindows[1]
+    endif
+    exec bufwinnr(dest) . "wincmd w"
+endfunction
+"noremap <silent> <Space> :call ToggleWindow()<CR>
+
 " Validate XML syntax on write (skips schema validation)
 Vautocmd BufWritePost *.xml call AsyncCommand("xmllint --postvalid " . expand("%:p"), "ShowErrors")
 
 " Opens the edit command on the current directory
 "cnoremap ced e <c-r>=expand("%:h")<cr>/
+
+let g:as_log = $HOME . "/.macromedia/Flash_Player/Logs/flashlog.txt"
+let g:as_locations = [
+\ "/export/assemblage/aspirin/src/main/as",
+\ "/export/assemblage/flashbang/src/main/as",
+\ "/export/assemblage/narya/src/main/as",
+\ "/export/assemblage/nenya/src/main/as",
+\ "/export/assemblage/vilya/src/main/as",
+\ "/export/assemblage/orth/src/main/as",
+\ "/export/AsWing/src",
+\ "/export/flex/flex_sdk_4.1.0.16076/frameworks/libs/player/10.1/playerglobal.swc",
+\ "/export/who/src/main/as"
+\ ]
+nmap <leader>i :call AspirinImport()<CR>
+nmap <leader>e :call AspirinLastEx() \| cwindow<CR>
 
 " Previous rebinds may screw up SELECT mode (used by snippets), so remove all
 " select mode mappings. Is this safe? Who knows!
