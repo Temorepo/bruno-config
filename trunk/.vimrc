@@ -131,10 +131,10 @@ function! Import(idx)
     pyfile ~/.vim/import.py
 endfunction
 command! -nargs=* Import call Import(<q-args>)
-nmap ;i :pyfile /export/assemblage/aspirin/vim/import.py<CR>
+nmap <leader>i :pyfile /export/assemblage/aspirin/vim/import.py<CR>
 
 " Open the symbol under the cursor in Coreen
-command! -nargs=1 -complete=tag Coreen !xdg-open http://localhost:8080/coreen/\#LIBRARY~search~<args>
+command! -nargs=1 -complete=tag Coreen !xdg-open http://localhost:8192/coreen/\#LIBRARY~search~<args>
 nmap <leader>c :Coreen <cword><CR>
 
 " Quickly search and replace the word under the cursor
