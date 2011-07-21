@@ -20,7 +20,7 @@ filetype plugin on
 " General options
 let mapleader=","
 
-set backspace=2
+set backspace=indent,eol,start
 set mouse=a
 
 set ignorecase
@@ -33,9 +33,8 @@ set gdefault
 
 set confirm
 
-"set cindent
-set smartindent
 set showmode
+set showcmd
 
 set nowrap
 set scrolloff=2
@@ -43,8 +42,10 @@ set sidescrolloff=2
 
 set shiftwidth=4
 set softtabstop=4
-"set tabstop=4
+set tabstop=4
 set expandtab
+set autoindent
+set smartindent
 
 syntax on
 set background=dark
@@ -62,6 +63,7 @@ map N 10k
 " Cycle through build errors (and ack results)
 map - :cc<CR>:cnext<CR>
 map _ :cc<CR>:cprevious<CR>
+map <leader>- :ccl<CR>
 
 noremap s l
 map n k
@@ -118,7 +120,7 @@ noremap <C-S> <C-W>l
 noremap <Space> <C-W>w
 noremap <S-Space> <C-W>W
 
-inoremap { {<CR>}<ESC>O
+" inoremap { {<CR>}<ESC>O
 
 set tags=~/.tags/*/tags,./tags,tags
 
@@ -153,8 +155,15 @@ nmap <leader>G :stag<space>
 
 nmap <silent> <leader>t :CommandT<CR>
 
+" Highlight trailing whitespace
 highlight TrailingWhitespace ctermbg=red guibg=red
 Vautocmd Syntax * syn match TrailingWhitespace /\s\+\%#\@<!$/ containedin=ALL
+
+" Highlight characters past 100 columns
+highlight LongLine ctermbg=red guibg=red
+Vautocmd Syntax * syn match LongLine '\%>100v.\+'
+set textwidth=100
+set winwidth=100
 
 " Persistent undo
 if version >= 703
@@ -259,7 +268,6 @@ Vautocmd FileType java compiler ant
 Vautocmd FileType xml compiler xmllint
 
 " Window management
-set winwidth=100
 "set splitright
 
 " (Experimental)
