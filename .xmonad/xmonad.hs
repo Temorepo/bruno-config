@@ -36,7 +36,7 @@ getWellKnownName dbus = tryGetName `catchDyn` (\ (DBus.Error _ _) ->
 myLayout = named "Tall" layout ||| named "Wide" (Mirror layout) ||| noBorders Full
     where
         tall = Tall 1 (3/100) 0.6
-        layout = magnifiercz' 1.3 (smartBorders tall)
+        layout = smartBorders tall
 
 main = withConnection Session $ \ dbus -> do
   putStrLn "Getting well-known name."
