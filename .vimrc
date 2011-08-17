@@ -127,14 +127,6 @@ set tags=~/.tags/*/tags,./tags,tags
 "highlight AutoSearch term=italic cterm=italic gui=italic
 "Vautocmd CursorMoved * silent! exe printf('match AutoSearch /\<%s\>/', expand('<cword>'))
 
-" Auto importer
-function! Import(idx)
-    let g:importIdx=a:idx
-    pyfile ~/.vim/import.py
-endfunction
-command! -nargs=* Import call Import(<q-args>)
-nmap <leader>i :pyfile /export/assemblage/aspirin/vim/import.py<CR>
-
 " Open the symbol under the cursor in Coreen
 command! -nargs=1 -complete=tag Coreen !xdg-open http://localhost:8192/coreen/\#LIBRARY~search~<args>
 nmap <leader>c :Coreen <cword><CR>
@@ -157,7 +149,8 @@ nmap <silent> <leader>t :CommandT<CR>
 
 " Highlight trailing whitespace
 highlight TrailingWhitespace ctermbg=red guibg=red
-Vautocmd Syntax * syn match TrailingWhitespace /\s\+\%#\@<!$/ containedin=ALL
+Vautocmd InsertLeave,Syntax * match TrailingWhitespace /\s\+$/
+Vautocmd InsertEnter * match TrailingWhitespace /\s\+\%#\@<!$/
 
 " Highlight characters past 100 columns
 highlight LongLine ctermbg=red guibg=red
