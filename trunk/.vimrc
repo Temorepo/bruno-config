@@ -154,7 +154,7 @@ Vautocmd InsertEnter * match TrailingWhitespace /\s\+\%#\@<!$/
 
 " Highlight characters past 100 columns
 highlight LongLine ctermbg=DarkRed guibg=DarkRed
-Vautocmd Syntax * if &modifiable | syntax match LongLine '\%>100v.\+' | endif
+Vautocmd BufNewFile,BufRead * if &modifiable | syntax match LongLine '\%>100v.\+' | endif
 set textwidth=100
 set winwidth=100
 
