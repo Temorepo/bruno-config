@@ -1,2 +1,4 @@
 --type-set
 haxe=.hx
+--type-set
+as=.as

@@ -7,19 +7,20 @@ editor = gvim -f -c start
 #git = 1
 
 [extensions]
+#bookmarks =
+color =
 #extdiff =
 fetch =
-color =
-hgk = /usr/lib/pymodules/python2.6/hgext/hgk.py
-schemes =
-pager =
-#bookmarks =
-rebase =
-hgshelve = /export/hgshelve/hgshelve.py
-#hgslurp = /home/bruno/hg-slurp.py
 #hgattic = /export/hgattic/attic.py
 #hgext.bookmarks =
 #hggit =
+hgk = /usr/lib/pymodules/python2.6/hgext/hgk.py
+hgshelve = /export/hgshelve/hgshelve.py
+#hgslurp = /home/bruno/hg-slurp.py
+pager =
+rebase =
+schemes =
+transplant =
 
 #[bookmarks]
 #track.current = True

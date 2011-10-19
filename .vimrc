@@ -11,6 +11,7 @@ set nocompatible
 augroup vimrc | autocmd!
 command! -nargs=* Vautocmd autocmd vimrc <args>
 
+" Reload vimrc on write
 Vautocmd BufWritePost $MYVIMRC source %
 
 " Not sure why this was commented out
@@ -61,9 +62,9 @@ map T 10j
 map N 10k
 
 " Cycle through build errors (and ack results)
-map - :cc<CR>:cnext<CR>
-map _ :cc<CR>:cprevious<CR>
-map <leader>- :ccl<CR>
+map <silent> - :cc<CR>:cnext<CR>
+map <silent> _ :cc<CR>:cprevious<CR>
+map <silent> <leader>- :ccl<CR>
 
 noremap s l
 map n k
@@ -368,7 +369,8 @@ let g:as_locations = [
 \ "/export/assemblage/orth/src/main/as",
 \ "/export/AsWing/src",
 \ "/export/flex/flex_sdk_4.1.0.16076/frameworks/libs/player/10.1/playerglobal.swc",
-\ "/export/who/src/main/as"
+\ "/export/who/src/main/as",
+\ "/export/msoy/src/as"
 \ ]
 nmap <leader>i :call AspirinImport()<CR>
 nmap <leader>e :call AspirinLastEx() \| cwindow<CR>
