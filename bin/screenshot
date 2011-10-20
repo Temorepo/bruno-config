@@ -1,22 +1,29 @@
 #!/bin/sh
 
+# https://code.google.com/p/xmonad/issues/detail?id=476
+sleep 1
+
 screenshot=/tmp/screenshot.png
 
-if [ $# -gt 0 ]; then
-    import -window $1 $screenshot
-else
-    # Left click to select area, right click for the entire selected window
-    import $screenshot
+scrot -s $screenshot
+
+if [ ! -f $screenshot ]; then
+    exit;
 fi
 
 md5=`md5sum -b $screenshot | cut -d ' ' -f 1`
 remote="aduros.emufarmers.com/dump/$md5.png"
 
+# Keep a local copy
+mkdir -p ~/.screenshots
+cp $screenshot ~/.screenshots/$md5.png
+
 # Upload
 scp -B $screenshot "aduros@aduros.emufarmers.com:$remote"
 
 # Copy the URL into the clipboard
-echo -n "http://$remote" | xsel -i
+url="http://$remote"
+echo -n "$url" | xsel -i
 
 # Show a notification
 thumb=/tmp/screenshot_thumb.bmp # bitmap format required here
