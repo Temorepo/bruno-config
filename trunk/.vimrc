@@ -54,7 +54,8 @@ set incsearch
 set hls
 
 set wildignore+=*/dist,*/build
-set wildignore+=*.pyc,*.o,*.cmo,*.cmi,*.cmx,*.annot,*.class,*.jar,*.swc,.svn,.hg,.git
+set wildignore+=.svn,.hg,.git
+set wildignore+=*.png,*.swf,*.fla,*.pyc,*.o,*.cmo,*.cmi,*.cmx,*.annot,*.class,*.jar,*.swc
 
 " Key mappings
 
@@ -195,7 +196,8 @@ function! s:template_keywords()
     let package = substitute(package, "\/", ".", "g")
     silent! %s/%PACKAGE%/\=package/g
 
-    let header_path = substitute(abspath, "\/src/.*", "", "") . "/lib/SOURCE_HEADER"
+    let project_root = substitute(abspath, "\/src/.*", "", "")
+    let header_path = project_root . "/etc/SOURCE_HEADER"
     if filereadable(header_path)
         let header = join(readfile(header_path), "\n")
         silent! %s/%SOURCE_HEADER%/\=header/g

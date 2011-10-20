@@ -11,6 +11,7 @@
     co = checkout
     di = diff
     lg = log --pretty=format:'%C(yellow)%h%Creset -%C(red)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+    out = log origin/master...master
 
 [color]
     ui = auto
