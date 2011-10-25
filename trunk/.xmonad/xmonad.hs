@@ -26,12 +26,22 @@ myLayout = named "Tall" layout ||| named "Wide" (Mirror layout) ||| noBorders Fu
         tall = Tall 1 (3/100) 0.6
         layout = smartBorders tall
 
+myManageHook = composeAll (
+    [ manageHook xfceConfig
+    , className =? "Xfce4-notifyd" --> doIgnore
+    , className =? "Xfrun4" --> doFloat
+    ])
+
 main = withConnection Session $ \ dbus -> do
   getWellKnownName dbus
   xmonad $ xfceConfig {
     logHook = dynamicLogWithPP (prettyPrinter dbus),
     layoutHook = desktopLayoutModifiers $ myLayout,
-    startupHook = setWMName "LG3D" -- Makes Java GUIs work
+    manageHook = myManageHook,
+    terminal = "x-terminal-emulator", -- Use the default system terminal
+    startupHook = setWMName "LG3D", -- Makes Java GUIs work
+    focusedBorderColor = "#18b2eb",
+    normalBorderColor = "#202020"
     } `additionalKeysP` (
     [ ("M-d", kill)
     , ("M-t", windows W.focusDown)
@@ -43,16 +53,18 @@ main = withConnection Session $ \ dbus -> do
     , ("M-`", nextScreen)
     , ("S-M-`", shiftNextScreen)
     , ("M-0", shiftTo Next EmptyWS)
+    , ("C-M-l", spawn "xflock4")
+    , ("S-M-q", spawn "xfce4-session-logout")
     ])
 
 prettyPrinter :: Connection -> PP
 prettyPrinter dbus = defaultPP
     { ppOutput   = dbusOutput dbus
     , ppTitle    = pangoSanitize
-    , ppCurrent  = pangoColor "green" . wrap "[" "]" . pangoSanitize
-    , ppVisible  = pangoColor "yellow" . wrap "(" ")" . pangoSanitize
-    , ppHidden   = const ""
-    , ppUrgent   = pangoColor "red"
+    , ppCurrent  = pangoColor "#00ffff" . wrap "<tt>" " </tt>" . pangoSanitize
+    , ppVisible  = pangoColor "#00a0cc" . wrap "<tt>" " </tt>" . pangoSanitize
+    , ppHidden   = pangoColor "#909090" . wrap "<tt>" " </tt>" . pangoSanitize
+    , ppUrgent   = pangoColor "red" . pangoSanitize
     , ppLayout   = const ""
     , ppSep      = " "
     }
