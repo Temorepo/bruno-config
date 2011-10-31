@@ -14,7 +14,7 @@ if [ ! -f $path ]; then
 fi
 
 salt="$HOME/sync/.share-salt"
-hash=`cat "$path" "$salt" | md5sum -b | cut -d ' ' -f 1 | xxd -r -p | base64 | tr -d =/ | tr + -`
+hash=`cat "$path" "$salt" | md5sum -b | cut -d ' ' -f 1 | xxd -r -p | base64 | tr -d = | tr +/ -_`
 
 # Append a file extension if necessary
 base=`basename $path`
