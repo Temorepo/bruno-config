@@ -1,0 +1,38 @@
+#!/bin/sh
+#
+# Uploads a file to a public web server and puts the URL in the clipboard
+
+if [ $# -lt 1 ]; then
+    echo "Usage: ${0} FILE"
+    exit 1
+fi
+
+path="$1"
+if [ ! -f $path ]; then
+    echo "$path is not a file!"
+    exit 1
+fi
+
+salt="$HOME/sync/.share-salt"
+hash=`cat "$path" "$salt" | md5sum -b | cut -d ' ' -f 1 | xxd -r -p | base64 | tr -d =/ | tr + -`
+
+# Append a file extension if necessary
+base=`basename $path`
+ext="${base##*.}"
+if [ "$ext" != "$base" ]; then
+    hash="$hash.$ext"
+fi
+
+# Upload it
+remote="aduros@aduros.emufarmers.com:~/web/dump/$hash"
+scp -B "$path" "$remote"
+
+# Copy the URL to the clipboard
+url="http://aduros.emufarmers.com/dump/$hash"
+echo -n "$url" | xsel -i
+
+# Log it to file too in case the clipboard gets overwritten
+echo "$path" "$url" >> /tmp/share.log
+
+# Send a notification
+notify-send "Shared ${base}" "URL copied to X clipboard"
