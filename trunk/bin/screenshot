@@ -1,35 +1,16 @@
 #!/bin/sh
+#
+# Takes a screenshot and shares it
 
 # https://code.google.com/p/xmonad/issues/detail?id=476
 sleep 1
 
-screenshot=/tmp/screenshot.png
+file=/tmp/screenshot.png
 
-scrot -s $screenshot
-
-if [ ! -f $screenshot ]; then
+scrot -s $file
+if [ ! -f $file ]; then
     exit;
 fi
 
-md5=`md5sum -b $screenshot | cut -d ' ' -f 1`
-remote="aduros.emufarmers.com/dump/$md5.png"
-
-# Keep a local copy
-mkdir -p ~/.screenshots
-cp $screenshot ~/.screenshots/$md5.png
-
-# Upload
-scp -B $screenshot "aduros@aduros.emufarmers.com:$remote"
-
-# Copy the URL into the clipboard
-url="http://$remote"
-echo -n "$url" | xsel -i
-
-# Show a notification
-thumb=/tmp/screenshot_thumb.bmp # bitmap format required here
-convert $screenshot $thumb
-notify-send "Screenshot uploaded" "URL copied to X clipboard" -i $thumb
-
-# Cleanup
-rm -f $thumb
-rm -f $screenshot
+share $file
+rm $file
