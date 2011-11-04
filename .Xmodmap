@@ -1,0 +1,8 @@
+! Replace caps lock with an escape
+clear Lock
+keycode 66 = Escape
+
+! Make command keys alts
+clear Mod4
+add Mod1 = Super_L
+add Mod1 = Super_R

@@ -7,26 +7,12 @@ editor = gvim -f -c start
 #git = 1
 
 [extensions]
-#bookmarks =
 color =
-#extdiff =
 fetch =
-#hgattic = /export/hgattic/attic.py
-#hgext.bookmarks =
-#hggit =
-hgk = /usr/lib/pymodules/python2.6/hgext/hgk.py
-hgshelve = /export/hgshelve/hgshelve.py
-#hgslurp = /home/bruno/hg-slurp.py
 pager =
 rebase =
 schemes =
 transplant =
-
-#[bookmarks]
-#track.current = True
-
-#[extdiff]
-#cmd.vdi = vimdiff
 
 [schemes]
 ooo = ssh://src.earth.threerings.net/
@@ -34,7 +20,3 @@ ooo = ssh://src.earth.threerings.net/
 [pager]
 attend = annotate, cat, diff, export, glog, log, qdiff
 pager = less -R
-
-#[tasks]
-#auto.track.new = True
-#auto.stash = True
