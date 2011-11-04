@@ -135,10 +135,13 @@ nmap <leader>c :Coreen <cword><CR>
 
 " Quickly search and replace the word under the cursor
 nmap <leader>r :%s/\<<c-r>=expand("<cword>")<cr>\>/
+" TODO(bruno): Search and replace across multiple files
 
 let g:ackprg="ack-grep -H --nocolor --nogroup --column --ignore-dir=dist --ignore-dir=build"
 let g:ackhighlight=1
 nmap <leader>f :Ack<space>
+nmap <leader>F :Ack <c-r>=expand("<cword>")<cr><space>
+" TODO(bruno): Ack using current visual selection
 
 let g:CommandTMaxDepth=30
 let g:CommandTMaxHeight=20

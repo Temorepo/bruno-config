@@ -20,7 +20,7 @@ noremap P :tabmove! +1<CR>
 noremap l n
 noremap L N
 
-set defsearch="ddg"
+set defsearch="duck-duck-go"
 
 "set! browser.tabs.autoHide=true
 set titlestring="Firefox"
@@ -33,21 +33,30 @@ set incfind
 
 noremap e :javascript window.TabView.toggle()<CR>
 
+" Firefox about:config preferences
+set! general.warnOnAboutConfig=false
+" No close buttons, use middle click
+set! browser.tabs.closeButtons=2
+set! browser.search.defaultenginename="Duck Duck Go"
+
+autocmd DownloadPost * :!notify-send -i download "Download complete" "<title>"
+autocmd LocationChange twitter.com,turntable.fm :pintab
+
 javascript <<EOF
 (function(){
 
     // Keep the status bar the same height even if large icons have been added to it
     //document.getElementById("addon-bar").style.maxHeight = "16px";
 
-    dactyl.modules.commands.addUserCommand(["chrome"], "Open current page in Chrome", function (args) {
+    dactyl.modules.commands.add(["chrome"], "Open current page in Chrome", function (args) {
         dactyl.execute("!google-chrome '" + dactyl.modules.buffer.URL + "' &", null, true);
     });
 
-    dactyl.modules.commands.addUserCommand(["translate"], "Translate the current page", function (args) {
+    dactyl.modules.commands.add(["translate"], "Translate the current page", function (args) {
         dactyl.open("http://translate.google.com/translate?u=" + escape(dactyl.modules.buffer.URL));
     });
 
-    dactyl.modules.commands.addUserCommand(["clearcache"], "Clear the browser cache", function (args) {
+    dactyl.modules.commands.add(["clearcache"], "Clear the browser cache", function (args) {
         var cacheClass = Components.classes["@mozilla.org/network/cache-service;1"];
         var cacheService = cacheClass.getService(Components.interfaces.nsICacheService);
         cacheService.evictEntries(Components.interfaces.nsICache.STORE_ON_DISK);

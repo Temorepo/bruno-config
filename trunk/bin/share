@@ -35,4 +35,4 @@ echo -n "$url" | xsel -i
 echo "$path" "$url" >> /tmp/share.log
 
 # Send a notification
-notify-send "Shared ${base}" "URL copied to X clipboard"
+notify-send "Shared ${base}" "URL copied to X clipboard" -i edit-paste

@@ -7,6 +7,7 @@ import qualified Data.Map as M
 
 import XMonad.Actions.CycleWS
 import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.SetWMName
 
@@ -34,7 +35,7 @@ myManageHook = composeAll (
 
 main = withConnection Session $ \ dbus -> do
   getWellKnownName dbus
-  xmonad $ xfceConfig {
+  xmonad $ ewmh xfceConfig {
     logHook = dynamicLogWithPP (prettyPrinter dbus),
     layoutHook = desktopLayoutModifiers $ myLayout,
     manageHook = myManageHook,
@@ -48,13 +49,13 @@ main = withConnection Session $ \ dbus -> do
     , ("M-n", windows W.focusUp)
     , ("S-M-t", windows W.swapDown)
     , ("S-M-n", windows W.swapUp)
-    , ("<F9>", spawn "xsel -o | /home/bruno/bin/pastebin") -- TODO: Show clipboard in dzen
-    , ("<Print>", spawn ("/home/bruno/bin/screenshot"))
+    , ("<Print>", spawn "/home/bruno/bin/screenshot")
     , ("M-`", nextScreen)
     , ("S-M-`", shiftNextScreen)
     , ("M-0", shiftTo Next EmptyWS)
     , ("C-M-l", spawn "xflock4")
     , ("S-M-q", spawn "xfce4-session-logout")
+    , ("M-<F12>", spawn "/home/bruno/sync/bin/genpass")
     ])
 
 prettyPrinter :: Connection -> PP
