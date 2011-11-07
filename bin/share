@@ -13,6 +13,7 @@ if [ ! -f $path ]; then
     exit 1
 fi
 
+# Create a unique file name based on the content hash
 salt="$HOME/sync/.share-salt"
 hash=`cat "$path" "$salt" | md5sum -b | cut -d ' ' -f 1 | xxd -r -p | base64 | tr -d = | tr +/ -_`
 
@@ -24,11 +25,11 @@ if [ "$ext" != "$base" ]; then
 fi
 
 # Upload it
-remote="aduros@aduros.emufarmers.com:~/web/dump/$hash"
+remote="catdap.com:~/share/$hash"
 scp -B "$path" "$remote"
 
 # Copy the URL to the clipboard
-url="http://aduros.emufarmers.com/dump/$hash"
+url="https://share.catdap.com/$hash"
 echo -n "$url" | xsel -i
 
 # Log it to file too in case the clipboard gets overwritten
