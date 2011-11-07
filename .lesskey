@@ -1,0 +1,15 @@
+# !!! Don't forget to run lesskey to update .less !!!
+#
+
+#command
+t forw-line
+n back-line
+T forw-scroll
+N back-scroll
+l repeat-search
+\el repeat-search-all
+L reverse-search
+\eL reverse-search-all
+
+#env
+LESSHISTFILE = /home/bruno/sync/.lesshst
