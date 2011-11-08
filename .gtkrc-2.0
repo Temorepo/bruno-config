@@ -3,3 +3,6 @@ style "vimfix" {
   bg[NORMAL] = "#333333"
 }
 widget "vim-main-window.*GtkForm" style "vimfix"
+
+# Use emacs-like keys
+gtk-key-theme-name = "Emacs"

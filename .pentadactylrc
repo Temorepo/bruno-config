@@ -40,7 +40,9 @@ set! browser.tabs.closeButtons=2
 set! browser.search.defaultenginename="Duck Duck Go"
 
 autocmd DownloadPost * :!notify-send -i download "Download complete" "<title>"
-autocmd LocationChange twitter.com,turntable.fm :pintab
+autocmd LocationChange twitter.com,turntable.fm,file:///home/bruno/sync/wiki.html :pintab
+
+map <silent> <leader>c :chrome<CR>
 
 javascript <<EOF
 (function(){
