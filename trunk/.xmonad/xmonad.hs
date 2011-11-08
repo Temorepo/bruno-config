@@ -56,6 +56,9 @@ main = withConnection Session $ \ dbus -> do
     , ("C-M-l", spawn "xflock4")
     , ("S-M-q", spawn "xfce4-session-logout")
     , ("M-<F12>", spawn "/home/bruno/sync/bin/genpass")
+    ]) `additionalMouseBindings` (
+    [ ((mod1Mask, button4), \w -> focus w >> windows W.swapMaster)
+    , ((mod1Mask, button2), \w -> focus w >> kill)
     ])
 
 prettyPrinter :: Connection -> PP
