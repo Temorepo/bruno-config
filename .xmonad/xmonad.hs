@@ -53,7 +53,7 @@ main = withConnection Session $ \ dbus -> do
     , ("M-`", nextScreen)
     , ("S-M-`", shiftNextScreen)
     , ("M-0", shiftTo Next EmptyWS)
-    , ("C-M-l", spawn "xflock4")
+    , ("<F13>", spawn "xflock4")
     , ("S-M-q", spawn "xfce4-session-logout")
     , ("M-<F12>", spawn "/home/bruno/sync/bin/genpass")
     ]) `additionalMouseBindings` (
