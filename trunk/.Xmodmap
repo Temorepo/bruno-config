@@ -2,7 +2,14 @@
 clear Lock
 keycode 66 = Escape
 
+! Make original escape lock the screen (via xmonad)
+keycode 9 = F13
+
 ! Make command keys alts
 clear Mod4
 add Mod1 = Super_L
 add Mod1 = Super_R
+
+! Apple keyboard weirdness
+keycode 237 = F5
+keycode 238 = F6

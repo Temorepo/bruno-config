@@ -1,0 +1,62 @@
+#!/bin/bash
+#
+# Tool for syncing home directory symlinks
+
+repo=~/sync/dotfiles
+home=~
+
+function _add {
+    for file in $*; do
+        if [ -e "$file" ]; then
+            local file=`readlink -m "$file"`
+            local base="$repo"/`echo $file | sed -e 's!^'"$home"/!! | tr / +`
+            mv "$file" "$base"
+            ln -svi "$base" "$file"
+        fi
+    done
+}
+
+function _rm {
+    for file in $*; do
+        if [ -h "$file" ]; then
+            rm -v `readlink -m "$file"`
+            rm -v "$file"
+        fi
+    done
+}
+
+function _sync {
+    for file in "$repo"/*; do
+        local base=`basename "$file" "$repo" | tr + /`
+        local dir=`dirname "$base"`
+        if [ "$dir" != '.' ]; then
+            mkdir -pv "$home"/"$dir"
+        fi
+        # Ignores symlinks that already exist
+        local target="$home"/"$base"
+        if [ ! -h "$target" ]; then
+            ln -svi "$file" "$target"
+        fi
+    done
+}
+
+function _list {
+    for file in "$repo"/*; do
+        local base=`basename "$file" "$repo" | tr + /`
+        local target="$home"/"$base"
+        if [ -h "$target" ]; then
+            echo $target
+        fi
+    done
+}
+
+shopt -s dotglob
+case $1 in
+    add) _add ${@:2} ;;
+    rm | remove) _rm ${@:2} ;;
+    sync | "") _sync ;;
+    ls | list) _list ;;
+    help | *)
+        echo "Usage: $0 [add/rm/ls/sync] [files...]"
+        ;;
+esac
